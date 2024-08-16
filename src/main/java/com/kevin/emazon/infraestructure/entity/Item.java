@@ -25,12 +25,12 @@ public class Item {
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
-    @ManyToMany
-    @JoinTable(
-            name = "article_category",
-            joinColumns = @JoinColumn(name = "article_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
-    )
-    private Set<Category> categories;
+//    @ManyToMany
+//    @JoinTable(
+//            name = "article_category",
+//            joinColumns = @JoinColumn(name = "article_id"),
+//            inverseJoinColumns = @JoinColumn(name = "category_id")
+//    )
+//    private Set<CategoryEntity> categories;
 
 }

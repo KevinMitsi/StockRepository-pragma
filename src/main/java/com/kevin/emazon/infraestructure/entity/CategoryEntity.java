@@ -11,15 +11,16 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Category {
+public class CategoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
+
     private String description;
 
-    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
-    private Set<Item> items;
+//    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+//    private Set<Item> items;
 
 }

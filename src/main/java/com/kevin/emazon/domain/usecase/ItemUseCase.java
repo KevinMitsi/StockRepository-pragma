@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 @AllArgsConstructor
-@Service
 public class ItemUseCase implements IItemServicePort {
 
     private final ItemPersistentPort _IitemPersistentPort;

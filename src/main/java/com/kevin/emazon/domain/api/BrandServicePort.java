@@ -4,7 +4,7 @@ import com.kevin.emazon.domain.model.Brand;
 
 import java.util.Optional;
 
-public interface IBrandServicePort {
+public interface BrandServicePort {
     Iterable<Brand> getBrands();
     Optional<Brand> getBrand(Long id);
     Brand saveBrand(Brand brand);
