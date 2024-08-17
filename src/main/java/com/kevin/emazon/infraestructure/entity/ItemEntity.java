@@ -12,7 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class Item {
+public class ItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,7 +23,7 @@ public class Item {
 
     @ManyToOne
     @JoinColumn(name = "brand_id")
-    private Brand brand;
+    private BrandEntity brand;
 
     @ManyToMany
     @JoinTable(
@@ -31,6 +31,6 @@ public class Item {
             joinColumns = @JoinColumn(name = "article_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    private Set<Category> categories;
+    private Set<CategoryEntity> categories;
 
 }

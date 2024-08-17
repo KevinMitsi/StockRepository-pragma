@@ -12,7 +12,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Brand {
+public class BrandEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,6 +26,6 @@ public class Brand {
     private String description;
 
     @OneToMany(mappedBy = "brand")
-    private Set<Item> items;
+    private Set<ItemEntity> items;
 
 }
