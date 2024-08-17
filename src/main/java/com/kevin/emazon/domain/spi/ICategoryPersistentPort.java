@@ -1,8 +1,7 @@
 package com.kevin.emazon.domain.spi;
 
 import com.kevin.emazon.domain.model.Category;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
+
 
 import java.util.Optional;
 

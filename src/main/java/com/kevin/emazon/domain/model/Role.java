@@ -1,5 +1,3 @@
 package com.kevin.emazon.domain.model;
 
-public enum Role {
-    ADMIN
-}
+public enum Role {}

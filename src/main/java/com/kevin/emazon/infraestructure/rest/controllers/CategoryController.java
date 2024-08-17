@@ -1,6 +1,6 @@
 package com.kevin.emazon.infraestructure.rest.controllers;
 
-import com.kevin.emazon.application.dto.request.CategoryRequestDto;
+import com.kevin.emazon.application.dto.CategoryDto;
 import com.kevin.emazon.application.handler.ICategoryHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 public class CategoryController {
     private final ICategoryHandler categoryHandler;
     @PostMapping("/new")
-    private ResponseEntity<Void> createCategory(@RequestBody CategoryRequestDto categoryRequest) {
+    public ResponseEntity<String> createCategory(@RequestBody CategoryDto categoryRequest) {
         categoryHandler.saveCategory(categoryRequest);
-        return  ResponseEntity.status(HttpStatus.CREATED).build();
+        return  ResponseEntity.status(HttpStatus.CREATED).body("Felicidades, ha creado satisfactoriamente su categoría " +categoryRequest.getName());
     }
 }

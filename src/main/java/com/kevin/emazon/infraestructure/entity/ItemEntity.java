@@ -12,7 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class Item {
+public class ItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,14 +23,14 @@ public class Item {
 
     @ManyToOne
     @JoinColumn(name = "brand_id")
-    private Brand brand;
+    private BrandEntity brand;
 
-//    @ManyToMany
-//    @JoinTable(
-//            name = "article_category",
-//            joinColumns = @JoinColumn(name = "article_id"),
-//            inverseJoinColumns = @JoinColumn(name = "category_id")
-//    )
-//    private Set<CategoryEntity> categories;
+    @ManyToMany
+    @JoinTable(
+            name = "article_category",
+            joinColumns = @JoinColumn(name = "article_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private Set<CategoryEntity> categories;
 
 }

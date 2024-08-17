@@ -1,7 +1,6 @@
 package com.kevin.emazon.domain.api;
 
 import com.kevin.emazon.domain.model.Category;
-import org.springframework.stereotype.Service;
 
 
 import java.util.Optional;

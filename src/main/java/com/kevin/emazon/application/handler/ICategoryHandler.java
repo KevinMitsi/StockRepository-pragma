@@ -1,9 +1,8 @@
 package com.kevin.emazon.application.handler;
 
-import com.kevin.emazon.application.dto.request.CategoryRequestDto;
-import com.kevin.emazon.domain.model.Category;
+import com.kevin.emazon.application.dto.CategoryDto;
 
 public interface ICategoryHandler {
-    void saveCategory(CategoryRequestDto category);
+    void saveCategory(CategoryDto category);
 
 }

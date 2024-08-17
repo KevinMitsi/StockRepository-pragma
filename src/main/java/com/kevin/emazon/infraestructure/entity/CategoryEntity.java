@@ -20,7 +20,7 @@ public class CategoryEntity {
 
     private String description;
 
-//    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
-//    private Set<Item> items;
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+    private Set<ItemEntity> items;
 
 }
