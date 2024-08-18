@@ -5,15 +5,19 @@ import com.kevin.emazon.domain.model.Category;
 
 import com.kevin.emazon.domain.spi.ICategoryPersistentPort;
 import com.kevin.emazon.infraestructure.exceptions.CategoryException;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
+
+
 
 import java.util.Optional;
 
-@AllArgsConstructor
-@Component
+
 public class CategoryUseCase implements ICategoryServicePort {
     private final ICategoryPersistentPort categoryPersistentPort;
+
+    public CategoryUseCase(ICategoryPersistentPort categoryPersistentPort) {
+        this.categoryPersistentPort = categoryPersistentPort;
+    }
+
     @Override
     public Iterable<Category> getCategories() {
         // not necessary yet

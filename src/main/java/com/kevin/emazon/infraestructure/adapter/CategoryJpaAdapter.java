@@ -33,7 +33,7 @@ public class CategoryJpaAdapter implements ICategoryPersistentPort {
         if (categoryRepository.existsByNameIgnoreCase(category.getName())){
             throw new CategoryException("Categoría ya creada");
         }
-        categoryRepository.save(categoryRepository.save(categoryEntityMapper.categoryToCategoryEntity(category)));
+        categoryRepository.save(categoryEntityMapper.categoryToCategoryEntity(category));
     }
 
     @Override
