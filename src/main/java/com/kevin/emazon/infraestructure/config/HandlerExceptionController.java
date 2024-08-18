@@ -1,4 +1,4 @@
-package com.kevin.emazon.infraestructure.rest.advice;
+package com.kevin.emazon.infraestructure.config;
 
 import com.kevin.emazon.application.dto.ExceptionResponseDto;
 import com.kevin.emazon.infraestructure.exceptions.CategoryException;

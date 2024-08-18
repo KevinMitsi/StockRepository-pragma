@@ -1,4 +1,4 @@
-package com.kevin.emazon.infraestructure.rest.controllers;
+package com.kevin.emazon.infraestructure.controllers.controllers;
 
 import com.kevin.emazon.application.dto.CategoryDto;
 import com.kevin.emazon.application.handler.ICategoryHandler;
