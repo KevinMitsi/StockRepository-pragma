@@ -6,6 +6,8 @@ import com.kevin.emazon.application.mapper.ICategoryDtoMapper;
 import com.kevin.emazon.domain.api.ICategoryServicePort;
 import com.kevin.emazon.domain.model.Category;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -13,9 +15,18 @@ import org.springframework.stereotype.Service;
 public class CategoryHandler implements ICategoryHandler {
     private final ICategoryServicePort categoryServicePort;
     private final ICategoryDtoMapper categoryMapper;
+
+    @Override
+    public Page<CategoryDto> getAllCategories(String order, Pageable pageable) {
+        return mapCategoryPageToCategoryDtoPage(categoryServicePort.getCategories(order, pageable));
+    }
+
+    private Page<CategoryDto> mapCategoryPageToCategoryDtoPage(Page<Category> categories) {
+        return categories.map(categoryMapper::categoryToCategoryDto);
+    }
+
     @Override
     public void saveCategory(CategoryDto category) {
-        Category cat = categoryMapper.categoryDtoToCategory(category);
-        categoryServicePort.saveCategory(cat);
+        categoryServicePort.saveCategory(categoryMapper.categoryDtoToCategory(category));
     }
 }

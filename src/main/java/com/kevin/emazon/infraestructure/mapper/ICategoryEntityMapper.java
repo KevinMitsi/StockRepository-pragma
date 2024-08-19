@@ -10,4 +10,5 @@ import org.mapstruct.ReportingPolicy;
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface ICategoryEntityMapper {
     CategoryEntity categoryToCategoryEntity(Category category);
+    Category categoryEntityToCategory(CategoryEntity categoryEntity);
 }
