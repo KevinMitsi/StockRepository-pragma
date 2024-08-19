@@ -44,7 +44,7 @@ public class CategoryJpaAdapter implements ICategoryPersistentPort {
     }
 
     private Page<Category>mapCategoryEntityToCategory(Page<CategoryEntity> page){
-        return page.map(categoryEntityMapper::categoryEntityToCategory);
+        return page.map(categoryEntityMapper::toCategory);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class CategoryJpaAdapter implements ICategoryPersistentPort {
         if (categoryRepository.existsByNameIgnoreCase(category.getName())){
             throw new CategoryException("Categoría ya creada");
         }
-        categoryRepository.save(categoryEntityMapper.categoryToCategoryEntity(category));
+        categoryRepository.save(categoryEntityMapper.toCategoryEntity(category));
     }
 
     @Override
