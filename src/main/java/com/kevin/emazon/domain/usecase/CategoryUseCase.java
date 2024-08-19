@@ -2,26 +2,27 @@ package com.kevin.emazon.domain.usecase;
 
 import com.kevin.emazon.domain.api.ICategoryServicePort;
 import com.kevin.emazon.domain.model.Category;
-
 import com.kevin.emazon.domain.spi.ICategoryPersistentPort;
 import com.kevin.emazon.infraestructure.exceptions.CategoryException;
-
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
 
 public class CategoryUseCase implements ICategoryServicePort {
+
+
     private final ICategoryPersistentPort categoryPersistentPort;
 
     public CategoryUseCase(ICategoryPersistentPort categoryPersistentPort) {
         this.categoryPersistentPort = categoryPersistentPort;
     }
 
+
     @Override
-    public Iterable<Category> getCategories() {
-        // not necessary yet
-        return categoryPersistentPort.getCategories();
+    public Page<Category> getCategories(String order, Pageable pageable) {
+        return categoryPersistentPort.getCategories(order,pageable);
     }
 
     @Override

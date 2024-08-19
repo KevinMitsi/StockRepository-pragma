@@ -11,4 +11,5 @@ import org.mapstruct.ReportingPolicy;
 public interface ICategoryDtoMapper {
 
     Category categoryDtoToCategory(CategoryDto categoryDto);
+    CategoryDto categoryToCategoryDto(Category category);
 }
