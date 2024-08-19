@@ -60,7 +60,7 @@ class CategoryJpaAdapterTest {
             category.setName("NewCategoryName");
 
             when(categoryRepository.existsByNameIgnoreCase(category.getName())).thenReturn(false);
-            when(categoryEntityMapper.categoryToCategoryEntity(category)).thenReturn(new CategoryEntity());
+            when(categoryEntityMapper.toCategoryEntity(category)).thenReturn(new CategoryEntity());
 
             // Act
             categoryJpaAdapter.saveCategory(category);
@@ -89,8 +89,8 @@ class CategoryJpaAdapterTest {
             Page<CategoryEntity> categoryEntitiesPage = new PageImpl<>(List.of(categoryEntity1, categoryEntity2));
 
             when(categoryRepository.findAll(any(Pageable.class))).thenReturn(categoryEntitiesPage);
-            when(categoryEntityMapper.categoryEntityToCategory(categoryEntity1)).thenReturn(new Category(null,"Apple", null));
-            when(categoryEntityMapper.categoryEntityToCategory(categoryEntity2)).thenReturn(new Category(null,"Banana", null));
+            when(categoryEntityMapper.toCategory(categoryEntity1)).thenReturn(new Category(null,"Apple", null));
+            when(categoryEntityMapper.toCategory(categoryEntity2)).thenReturn(new Category(null,"Banana", null));
 
             // Act
             Page<Category> result = categoryJpaAdapter.getCategories("asc", pageable);
@@ -114,8 +114,8 @@ class CategoryJpaAdapterTest {
             Page<CategoryEntity> categoryEntitiesPage = new PageImpl<>(List.of(categoryEntity1, categoryEntity2));
 
             when(categoryRepository.findAll(any(Pageable.class))).thenReturn(categoryEntitiesPage);
-            when(categoryEntityMapper.categoryEntityToCategory(categoryEntity1)).thenReturn(new Category(null,"Banana", null));
-            when(categoryEntityMapper.categoryEntityToCategory(categoryEntity2)).thenReturn(new Category(null,"Apple", null));
+            when(categoryEntityMapper.toCategory(categoryEntity1)).thenReturn(new Category(null,"Banana", null));
+            when(categoryEntityMapper.toCategory(categoryEntity2)).thenReturn(new Category(null,"Apple", null));
 
             // Act
             Page<Category> result = categoryJpaAdapter.getCategories("desc", pageable);
