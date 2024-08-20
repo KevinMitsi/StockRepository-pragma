@@ -4,6 +4,8 @@ import com.kevin.emazon.domain.api.IBrandServicePort;
 import com.kevin.emazon.domain.model.Brand;
 import com.kevin.emazon.domain.spi.IBrandPersistentPort;
 import com.kevin.emazon.infraestructure.exceptions.BrandException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public class BrandUseCase implements IBrandServicePort {
     private final IBrandPersistentPort persistentPort;
@@ -20,11 +22,15 @@ public class BrandUseCase implements IBrandServicePort {
         persistentPort.saveBrand(brand);
 
     }
-
     private boolean isValidBrand(Brand brand){
         if (brand.getName().isBlank() || brand.getDescription().isBlank()){
             throw new BrandException("Ni el nombre ni la descripción pueden ser vacíos");
         }
         return (brand.getName().length() < 50) && (brand.getDescription().length() < 90);
+    }
+
+    @Override
+    public Page<Brand> getAll(String order, Pageable pageable) {
+        return persistentPort.getAll(order, pageable);
     }
 }
