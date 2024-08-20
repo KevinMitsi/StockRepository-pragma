@@ -13,4 +13,5 @@ public interface IBrandDtoMapper {
 
 
     Brand toBrand(BrandDto brandDto);
+    BrandDto toBrandDto(Brand brand);
 }
