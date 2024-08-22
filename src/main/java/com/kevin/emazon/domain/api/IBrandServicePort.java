@@ -7,4 +7,5 @@ import org.springframework.data.domain.Pageable;
 public interface IBrandServicePort {
     void saveBrand(Brand brand);
     Page<Brand> getAll(String order, Pageable pageable);
+
 }

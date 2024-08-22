@@ -13,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
-
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -55,15 +54,21 @@ public class CategoryJpaAdapter implements ICategoryPersistentPort {
 
     @Override
     public void saveCategory(Category category) {
-        if (categoryRepository.existsByNameIgnoreCase(category.getName())){
+        if (existByNameIgnoreCase(category.getName())){
             throw new CategoryException("Categoría ya creada");
         }
         categoryRepository.save(categoryEntityMapper.toCategoryEntity(category));
     }
 
+
     @Override
-    public void deleteCategory(Long id) {
-        // not necessary yet
+    public boolean existByNameIgnoreCase(String name){
+        return categoryRepository.existsByNameIgnoreCase(name);
+    }
+
+    @Override
+    public Optional<Category> findByName(String name) {
+        return categoryRepository.findByNameIgnoreCase(name).map(categoryEntityMapper::toCategory);
     }
 
 

@@ -1,13 +1,16 @@
 package com.kevin.emazon.application.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class BrandDto {
+    @NotNull(message = "El nombre de la marca no puede ser null")
     private String name;
+
+    @NotNull(message = "La descripción no puede ser nula")
     private String description;
 }

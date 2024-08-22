@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Component
 public class BrandJpaAdapter implements IBrandPersistentPort {
@@ -20,11 +22,22 @@ public class BrandJpaAdapter implements IBrandPersistentPort {
     private final IBrandEntityMapper brandEntityMapper;
     @Override
     public void saveBrand(Brand brand) {
-        if (brandRepository.existsByNameIgnoreCase(brand.getName())){
-            throw new BrandException("Esta categoria ya existe");
+        if (existByNameIgnoreCase(brand.getName())){
+            throw new BrandException("Esta marca ya existe");
         }
         brandRepository.save(brandEntityMapper.brandToBrandEntity(brand));
     }
+
+    @Override
+    public boolean existByNameIgnoreCase(String name) {
+        return brandRepository.existsByNameIgnoreCase(name);
+    }
+
+    @Override
+    public Optional<Brand> findByName(String name) {
+        return brandRepository.findByNameIgnoreCase(name).map(brandEntityMapper::brandEntityToBrand);
+    }
+
 
     @Override
     public Page<Brand> getAll(String order, Pageable pageable) {

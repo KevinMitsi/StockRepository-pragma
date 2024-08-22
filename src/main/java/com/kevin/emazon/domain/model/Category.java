@@ -1,15 +1,27 @@
 package com.kevin.emazon.domain.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Setter
+@Getter
 public class Category {
     private Long id;
     private String name;
     private String description;
+    private List<Item> items;
+
+    public Category() {
+        this.items = new ArrayList<>();
+    }
+
+    public Category(Long id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.items = new ArrayList<>();
+    }
 }

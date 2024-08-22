@@ -5,12 +5,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 
+
 import java.util.Optional;
 
 
 public interface ICategoryPersistentPort {
     Page<Category> getCategories(String order, Pageable pageable);
     Optional<Category> getCategory(Long id);
+
     void saveCategory(Category category);
-    void deleteCategory(Long id);
+
+    boolean existByNameIgnoreCase(String name);
+    Optional<Category> findByName(String name);
 }

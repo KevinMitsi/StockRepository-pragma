@@ -4,12 +4,12 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.Set;
 
-@Entity
+import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class BrandEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +20,7 @@ public class BrandEntity {
     private String description;
 
     @OneToMany(mappedBy = "brand")
-    private Set<ItemEntity> items;
+    @Column(name = "item_category_id")
+    private List<ItemEntity> items;
 
 }
