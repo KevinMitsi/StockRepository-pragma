@@ -22,11 +22,11 @@ public class CategoryHandler implements ICategoryHandler {
     }
 
     private Page<CategoryDto> mapCategoryPageToCategoryDtoPage(Page<Category> categories) {
-        return categories.map(categoryMapper::categoryToCategoryDto);
+        return categories.map(categoryMapper::toCategoryDto);
     }
 
     @Override
     public void saveCategory(CategoryDto category) {
-        categoryServicePort.saveCategory(categoryMapper.categoryDtoToCategory(category));
+        categoryServicePort.saveCategory(categoryMapper.toCategory(category));
     }
 }

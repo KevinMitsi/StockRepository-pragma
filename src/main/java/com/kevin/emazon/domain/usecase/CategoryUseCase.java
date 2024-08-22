@@ -7,7 +7,6 @@ import com.kevin.emazon.infraestructure.exceptions.CategoryException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.Optional;
 
 
 public class CategoryUseCase implements ICategoryServicePort {
@@ -26,9 +25,8 @@ public class CategoryUseCase implements ICategoryServicePort {
     }
 
     @Override
-    public Optional<Category> getCategory(Long id) {
-        // not necessary yet
-        return categoryPersistentPort.getCategory(id);
+    public Category getCategory(Long id) {
+        return categoryPersistentPort.getCategory(id).orElseThrow(() -> new CategoryException("La categoria con este id no existe"));
     }
 
     @Override
