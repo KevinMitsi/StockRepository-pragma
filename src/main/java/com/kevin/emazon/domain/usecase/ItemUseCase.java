@@ -40,6 +40,38 @@ public class ItemUseCase implements IItemServicePort {
 
     }
 
+    @Override
+    public List<Item> getAllByBrandName(String brandName, String order) {
+        validateOrder(order);
+
+        List<Item> itemsWithCategories = itemPersistentPort.getItemsByBrandName(brandName, order);
+        fullCategoriesInItems(itemsWithCategories);
+
+        return itemsWithCategories;
+    }
+
+
+
+    @Override
+    public List<Item> getAllByCategoryName(String categoryName, String order) {
+        validateOrder(order);
+
+        List<Item> itemsWithCategories = itemPersistentPort.getItemsByCategoryName(categoryName, order);
+        fullCategoriesInItems(itemsWithCategories);
+
+        return itemsWithCategories;
+    }
+
+    @Override
+    public List<Item> getAllByName(String itemName, String order) {
+        validateOrder(order);
+
+        List<Item> itemsWithCategories=itemPersistentPort.getItemsByName(itemName, order);
+        fullCategoriesInItems(itemsWithCategories);
+
+        return itemsWithCategories;
+    }
+
     private void saveItemCategory(Item item, List<Category> categories) {
 
         List<ItemCategory>list=categories.stream().map(category -> new ItemCategory(null, item, category)).toList();
@@ -54,7 +86,7 @@ public class ItemUseCase implements IItemServicePort {
     }
 
 
-    private List<Category> findCategories(List<Category> categories) {
+    private List<Category> findCategories(List<Category> categories){
         return categories.stream().map(category -> categoryPersistentPort
                 .findByName(category.getName())
                 .orElseThrow(() -> new CategoryException("La categoría "+ category.getName()+ " que intenta agregar a este item no existe")))
@@ -66,8 +98,6 @@ public class ItemUseCase implements IItemServicePort {
                 .findByName(name)
                 .orElseThrow(() -> new BrandException("La marca que intenta asignar a este item no existe"));
     }
-
-
     private void validateList(List<Category> categories) {
         Set<Category> noRepeatedCategory = new HashSet<>(categories);
         if (categories.isEmpty() || categories.size()>3){
@@ -78,4 +108,12 @@ public class ItemUseCase implements IItemServicePort {
         }
     }
 
+    private void validateOrder(String order){
+        if (!order.equalsIgnoreCase("asc") && !order.equalsIgnoreCase("desc")){
+            throw new ItemException("Elija un ordenamiento valido: 'ASC' o 'DESC'");
+        }
+    }
+    private void fullCategoriesInItems(List<Item> listItems) {
+        listItems.forEach(item -> item.setCategories(itemCategoryPersistentPort.findCategoriesByItemId(item.getId())));
+    }
 }

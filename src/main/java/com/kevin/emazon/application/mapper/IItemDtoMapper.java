@@ -12,4 +12,7 @@ import org.mapstruct.ReportingPolicy;
 public interface IItemDtoMapper {
     @Mapping(target = "name", source = "name")
     Item toItem(ItemDto itemDto);
+
+    @Mapping(target = "name", source = "name")
+    ItemDto toItemDto(Item item);
 }
