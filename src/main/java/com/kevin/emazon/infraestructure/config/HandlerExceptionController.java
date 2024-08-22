@@ -24,6 +24,12 @@ public class HandlerExceptionController {
 
     @ExceptionHandler(ItemException.class)
     public ResponseEntity<ExceptionResponseDto> inCaseThrowingItemException(Exception e){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionResponseDto("Brand Exception", e.getMessage(), HttpStatus.BAD_REQUEST));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionResponseDto("Item Exception", e.getMessage(), HttpStatus.BAD_REQUEST));
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ExceptionResponseDto> inCaseThrowingIllegalArgument(Exception e){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionResponseDto("IllegalArgument Exception", e.getMessage(), HttpStatus.BAD_REQUEST));
+    }
+
 }

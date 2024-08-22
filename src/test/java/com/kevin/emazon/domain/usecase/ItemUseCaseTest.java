@@ -18,6 +18,7 @@ import org.mockito.Mockito;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -84,7 +85,6 @@ class ItemUseCaseTest {
             Item item = new Item(null, "Valid Item", 100D, 1L, brand);
             item.setCategories(List.of(category));
 
-
             when(brandPersistentPort.findByName(brand.getName())).thenReturn(Optional.of(brand));
             when(categoryPersistentPort.findByName(category.getName())).thenReturn(Optional.empty());
 
@@ -131,7 +131,7 @@ class ItemUseCaseTest {
             Category category3 = new Category(3L, "Category 3", "asdas");
             Category category4 = new Category(4L, "Category 4", "asdasd");
             Item item = new Item(null, "Valid Item", 100D, 1L, brand);
-            item.setCategories(List.of(category1,category2,category3,category4));
+            item.setCategories(List.of(category1, category2, category3, category4));
 
             when(brandPersistentPort.findByName(brand.getName())).thenReturn(Optional.of(brand));
             when(categoryPersistentPort.findByName(category1.getName())).thenReturn(Optional.of(category1));
@@ -142,6 +142,94 @@ class ItemUseCaseTest {
             // Act & Assert
             assertThrows(ItemException.class, () -> itemUseCase.saveItem(item));
             verify(itemPersistentPort, never()).saveItem(any());
+        }
+    }
+
+    @Nested
+    class GetItemTests {
+
+        @Test
+        void getAllByBrandName_ShouldReturnItems_WhenValidBrandNameAndOrderProvided() {
+            // Arrange
+            String brandName = "Valid Brand";
+            String order = "asc";
+            List<Item> items = List.of(new Item(1L, "Item 1", 100D, 1L, new Brand(1L, brandName, "description")));
+            when(itemPersistentPort.getItemsByBrandName(brandName, order)).thenReturn(items);
+
+            // Act
+            List<Item> result = itemUseCase.getAllByBrandName(brandName, order);
+
+            // Assert
+            assertEquals(items, result); // Verifica que el resultado sea el esperado
+            verify(itemPersistentPort, times(1)).getItemsByBrandName(brandName, order);
+            verify(itemCategoryPersistentPort, times(items.size())).findCategoriesByItemId(anyLong());
+        }
+
+        @Test
+        void getAllByCategoryName_ShouldReturnItems_WhenValidCategoryNameAndOrderProvided() {
+            // Arrange
+            String categoryName = "Valid Category";
+            String order = "desc";
+            List<Item> items = List.of(new Item(1L, "Item 1", 100D, 1L, new Brand(1L, "Brand", "description")));
+            when(itemPersistentPort.getItemsByCategoryName(categoryName, order)).thenReturn(items);
+
+            // Act
+            List<Item> result = itemUseCase.getAllByCategoryName(categoryName, order);
+
+            // Assert
+            assertEquals(items, result); // Verifica que el resultado sea el esperado
+            verify(itemPersistentPort, times(1)).getItemsByCategoryName(categoryName, order);
+            verify(itemCategoryPersistentPort, times(items.size())).findCategoriesByItemId(anyLong());
+        }
+
+        @Test
+        void getAllByName_ShouldReturnItems_WhenValidItemNameAndOrderProvided() {
+            // Arrange
+            String itemName = "Item 1";
+            String order = "asc";
+            List<Item> items = List.of(new Item(1L, itemName, 100D, 1L, new Brand(1L, "Brand", "description")));
+            when(itemPersistentPort.getItemsByName(itemName, order)).thenReturn(items);
+
+            // Act
+            List<Item> result = itemUseCase.getAllByName(itemName, order);
+
+            // Assert
+            assertEquals(items, result); // Verifica que el resultado sea el esperado
+            verify(itemPersistentPort, times(1)).getItemsByName(itemName, order);
+            verify(itemCategoryPersistentPort, times(items.size())).findCategoriesByItemId(anyLong());
+        }
+
+        @Test
+        void getAllByBrandName_ShouldThrowItemException_WhenInvalidOrderProvided() {
+            // Arrange
+            String brandName = "Valid Brand";
+            String invalidOrder = "invalid";
+
+            // Act & Assert
+            assertThrows(ItemException.class, () -> itemUseCase.getAllByBrandName(brandName, invalidOrder));
+            verify(itemPersistentPort, never()).getItemsByBrandName(anyString(), anyString());
+        }
+
+        @Test
+        void getAllByCategoryName_ShouldThrowItemException_WhenInvalidOrderProvided() {
+            // Arrange
+            String categoryName = "Valid Category";
+            String invalidOrder = "invalid";
+
+            // Act & Assert
+            assertThrows(ItemException.class, () -> itemUseCase.getAllByCategoryName(categoryName, invalidOrder));
+            verify(itemPersistentPort, never()).getItemsByCategoryName(anyString(), anyString());
+        }
+
+        @Test
+        void getAllByName_ShouldThrowItemException_WhenInvalidOrderProvided() {
+            // Arrange
+            String itemName = "Item 1";
+            String invalidOrder = "invalid";
+
+            // Act & Assert
+            assertThrows(ItemException.class, () -> itemUseCase.getAllByName(itemName, invalidOrder));
+            verify(itemPersistentPort, never()).getItemsByName(anyString(), anyString());
         }
     }
 }
