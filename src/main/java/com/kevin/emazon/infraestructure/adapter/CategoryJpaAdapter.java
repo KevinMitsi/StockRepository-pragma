@@ -47,16 +47,7 @@ public class CategoryJpaAdapter implements ICategoryPersistentPort {
     }
 
     @Override
-    public Optional<Category> getCategory(Long id) {
-        // not necessary yet
-        return Optional.empty();
-    }
-
-    @Override
     public void saveCategory(Category category) {
-        if (existByNameIgnoreCase(category.getName())){
-            throw new CategoryException("Categoría ya creada");
-        }
         categoryRepository.save(categoryEntityMapper.toCategoryEntity(category));
     }
 

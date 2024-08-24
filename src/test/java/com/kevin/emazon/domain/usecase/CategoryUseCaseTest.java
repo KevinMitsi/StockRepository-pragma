@@ -3,6 +3,7 @@ package com.kevin.emazon.domain.usecase;
 import com.kevin.emazon.domain.model.Category;
 import com.kevin.emazon.domain.spi.ICategoryPersistentPort;
 import com.kevin.emazon.infraestructure.exceptions.CategoryException;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,32 +21,37 @@ class CategoryUseCaseTest {
     @InjectMocks
     private CategoryUseCase categoryUseCase;
 
-    @Test
-    void saveCategory_ShouldThrowException_WhenCategoryIsInvalid() {
-        // Arrange
-        Category invalidCategory = new Category();
-        invalidCategory.setName("ThisNameIsWayTooLongToBeValidSinceItExceedsFiftyCharactersLimit");
-        invalidCategory.setDescription("This description is also way too long to be valid and it exceeds the ninety characters limit.");
+    @Nested
+    class SaveCategoryTest {
+        @Test
+        void saveCategory_ShouldThrowException_WhenCategoryAlreadyExists() {
+            // Arrange
+            Category category = new Category();
+            category.setName("Libro");
 
-        // Act & Assert
-        assertThatThrownBy(() -> categoryUseCase.saveCategory(invalidCategory))
-                .isInstanceOf(CategoryException.class)
-                .hasMessage("El nombre o la descripción supera el total de caracteres. Nombre(Max 50) Descripcion(Max 90)");
+            when(categoryPersistentPort.existByNameIgnoreCase(category.getName())).thenReturn(true);
 
-        verify(categoryPersistentPort, never()).saveCategory(any(Category.class));
-    }
+            // Act & Assert
+            assertThatThrownBy(() -> categoryUseCase.saveCategory(category))
+                    .isInstanceOf(CategoryException.class)
+                    .hasMessage("Categoría ya creada");
 
-    @Test
-    void saveCategory_ShouldSaveCategory_WhenCategoryIsValid() {
-        // Arrange
-        Category validCategory = new Category();
-        validCategory.setName("ValidName");
-        validCategory.setDescription("Valid description");
+            verify(categoryPersistentPort, never()).saveCategory(any());
+        }
 
-        // Act
-        categoryUseCase.saveCategory(validCategory);
+        @Test
+        void saveCategory_ShouldSaveCategory_WhenCategoryDoesNotExist() {
+            // Arrange
+            Category category = new Category();
+            category.setName("NewCategoryName");
 
-        // Assert
-        verify(categoryPersistentPort, times(1)).saveCategory(validCategory);
+            when(categoryPersistentPort.existByNameIgnoreCase(category.getName())).thenReturn(false);
+
+            // Act
+            categoryUseCase.saveCategory(category);
+
+            // Assert
+            verify(categoryPersistentPort, times(1)).saveCategory(category);
+        }
     }
 }

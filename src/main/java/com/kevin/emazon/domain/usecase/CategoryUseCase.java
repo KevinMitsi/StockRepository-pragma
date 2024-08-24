@@ -25,29 +25,12 @@ public class CategoryUseCase implements ICategoryServicePort {
     }
 
     @Override
-    public Category getCategory(Long id) {
-        return categoryPersistentPort.getCategory(id).orElseThrow(() -> new CategoryException("La categoria con este id no existe"));
-    }
-
-    @Override
     public void saveCategory(Category category) {
-        if (!isValidCategory(category)){
-            throw new CategoryException("El nombre o la descripción supera el total de caracteres. Nombre(Max 50) Descripcion(Max 90)");
+        if (categoryPersistentPort.existByNameIgnoreCase(category.getName())){
+            throw new CategoryException("Categoría ya creada");
         }
         categoryPersistentPort.saveCategory(category);
     }
-
-    private boolean isValidCategory(Category category){
-        return category.getName().length() < 50 &&
-                category.getDescription().length() < 90;
-    }
-
-    @Override
-    public void deleteCategory(Long id) {
-        // not necessary yet
-    }
-
-
 
 
 }

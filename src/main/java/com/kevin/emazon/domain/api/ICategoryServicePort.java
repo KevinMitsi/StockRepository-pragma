@@ -10,7 +10,5 @@ import org.springframework.data.domain.Pageable;
 public interface ICategoryServicePort {
 
     Page<Category> getCategories(String order, Pageable pageable);
-    Category getCategory(Long id);
     void saveCategory(Category category);
-    void deleteCategory(Long id);
 }

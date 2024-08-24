@@ -36,41 +36,6 @@ class CategoryJpaAdapterTest {
     private CategoryJpaAdapter categoryJpaAdapter;
 
     @Nested
-    class SaveCategoryTest{
-        @Test
-        void saveCategory_ShouldThrowException_WhenCategoryAlreadyExists() {
-            // Arrange
-            Category category = new Category();
-            category.setName("Libro");
-
-            when(categoryRepository.existsByNameIgnoreCase(category.getName())).thenReturn(true);
-
-            // Act & Assert
-            assertThatThrownBy(() -> categoryJpaAdapter.saveCategory(category))
-                    .isInstanceOf(CategoryException.class)
-                    .hasMessage("Categoría ya creada");
-
-            verify(categoryRepository, never()).save(any());
-        }
-
-        @Test
-        void saveCategory_ShouldSaveCategory_WhenCategoryDoesNotExist() {
-            // Arrange
-            Category category = new Category();
-            category.setName("NewCategoryName");
-
-            when(categoryRepository.existsByNameIgnoreCase(category.getName())).thenReturn(false);
-            when(categoryEntityMapper.toCategoryEntity(category)).thenReturn(new CategoryEntity());
-
-            // Act
-            categoryJpaAdapter.saveCategory(category);
-
-            // Assert
-            verify(categoryRepository, times(1)).save(any(CategoryEntity.class));
-        }
-    }
-
-    @Nested
     class GetCategoriesTest{
         Pageable pageable;
         @BeforeEach

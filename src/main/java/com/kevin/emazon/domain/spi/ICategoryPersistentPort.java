@@ -11,7 +11,6 @@ import java.util.Optional;
 
 public interface ICategoryPersistentPort {
     Page<Category> getCategories(String order, Pageable pageable);
-    Optional<Category> getCategory(Long id);
 
     void saveCategory(Category category);
 
