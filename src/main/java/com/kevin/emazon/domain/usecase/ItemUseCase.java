@@ -9,6 +9,7 @@ import com.kevin.emazon.domain.spi.IBrandPersistentPort;
 import com.kevin.emazon.domain.spi.ICategoryPersistentPort;
 import com.kevin.emazon.domain.spi.IItemCategoryPersistentPort;
 import com.kevin.emazon.domain.spi.IItemPersistentPort;
+import com.kevin.emazon.domain.util.UtilClassDomain;
 import com.kevin.emazon.infraestructure.exceptions.BrandException;
 import com.kevin.emazon.infraestructure.exceptions.CategoryException;
 import com.kevin.emazon.infraestructure.exceptions.ItemException;
@@ -42,7 +43,8 @@ public class ItemUseCase implements IItemServicePort {
 
     @Override
     public List<Item> getAllByBrandName(String brandName, String order) {
-        validateOrder(order);
+
+        UtilClassDomain.validateOrderingMethod(order);
 
         List<Item> itemsWithCategories = itemPersistentPort.getItemsByBrandName(brandName, order);
         fullCategoriesInItems(itemsWithCategories);
@@ -50,11 +52,9 @@ public class ItemUseCase implements IItemServicePort {
         return itemsWithCategories;
     }
 
-
-
     @Override
     public List<Item> getAllByCategoryName(String categoryName, String order) {
-        validateOrder(order);
+        UtilClassDomain.validateOrderingMethod(order);
 
         List<Item> itemsWithCategories = itemPersistentPort.getItemsByCategoryName(categoryName, order);
         fullCategoriesInItems(itemsWithCategories);
@@ -64,7 +64,7 @@ public class ItemUseCase implements IItemServicePort {
 
     @Override
     public List<Item> getAllByName(String itemName, String order) {
-        validateOrder(order);
+        UtilClassDomain.validateOrderingMethod(order);
 
         List<Item> itemsWithCategories=itemPersistentPort.getItemsByName(itemName, order);
         fullCategoriesInItems(itemsWithCategories);
@@ -108,11 +108,6 @@ public class ItemUseCase implements IItemServicePort {
         }
     }
 
-    private void validateOrder(String order){
-        if (!order.equalsIgnoreCase("asc") && !order.equalsIgnoreCase("desc")){
-            throw new ItemException("Elija un ordenamiento valido: 'ASC' o 'DESC'");
-        }
-    }
     private void fullCategoriesInItems(List<Item> listItems) {
         listItems.forEach(item -> item.setCategories(itemCategoryPersistentPort.findCategoriesByItemId(item.getId())));
     }

@@ -3,7 +3,6 @@ package com.kevin.emazon.infraestructure.controllers;
 import com.kevin.emazon.application.dto.CategoryDto;
 import com.kevin.emazon.application.handler.ICategoryHandler;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +21,7 @@ public class CategoryController {
     }
 
     @GetMapping("/getall/{ordering}")
-    public ResponseEntity<List<CategoryDto>> getAllCategories(@PathVariable String ordering, Pageable pageable){
-        return ResponseEntity.ok().body(categoryHandler.getAllCategories(ordering,pageable).getContent());
+    public ResponseEntity<List<CategoryDto>> getAllCategories(@PathVariable String ordering){
+        return ResponseEntity.ok().body(categoryHandler.getAllCategories(ordering).getContent());
     }
 }
