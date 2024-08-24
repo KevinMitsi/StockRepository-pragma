@@ -3,10 +3,10 @@ package com.kevin.emazon.domain.usecase;
 import com.kevin.emazon.domain.api.ICategoryServicePort;
 import com.kevin.emazon.domain.model.Category;
 import com.kevin.emazon.domain.spi.ICategoryPersistentPort;
+import com.kevin.emazon.domain.util.UtilClassDomain;
 import com.kevin.emazon.infraestructure.exceptions.CategoryException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 
 
 public class CategoryUseCase implements ICategoryServicePort {
@@ -20,8 +20,11 @@ public class CategoryUseCase implements ICategoryServicePort {
 
 
     @Override
-    public Page<Category> getCategories(String order, Pageable pageable) {
-        return categoryPersistentPort.getCategories(order,pageable);
+    public List<Category> getCategories(String order) {
+
+        UtilClassDomain.validateOrderingMethod(order);
+
+        return categoryPersistentPort.getCategories(order);
     }
 
     @Override

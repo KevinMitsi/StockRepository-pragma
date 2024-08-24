@@ -1,16 +1,13 @@
 package com.kevin.emazon.domain.spi;
 
 import com.kevin.emazon.domain.model.Category;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
-
-
+import java.util.List;
 import java.util.Optional;
 
 
 public interface ICategoryPersistentPort {
-    Page<Category> getCategories(String order, Pageable pageable);
+    List<Category> getCategories(String order);
 
     void saveCategory(Category category);
 
