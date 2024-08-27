@@ -1,6 +1,9 @@
 package com.kevin.emazon.application.dto;
 
+import com.kevin.emazon.application.util.ConstantUtilClass;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Getter
@@ -8,9 +11,13 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BrandDto {
-    @NotNull(message = "El nombre de la marca no puede ser null")
+    @NotNull(message = ConstantUtilClass.BrandErrorMsg.NN_NAME)
+    @NotBlank(message = ConstantUtilClass.BrandErrorMsg.NB_NAME)
+    @Size(message = ConstantUtilClass.BrandErrorMsg.S_NAME, min = 3, max = 50)
     private String name;
 
-    @NotNull(message = "La descripción no puede ser nula")
+    @NotNull(message = ConstantUtilClass.BrandErrorMsg.NN_DESCRIPTION)
+    @NotBlank(message = ConstantUtilClass.BrandErrorMsg.NB_DESCRIPTION)
+    @Size(message = ConstantUtilClass.BrandErrorMsg.S_DESCRIPTION, min = 5, max = 90)
     private String description;
 }

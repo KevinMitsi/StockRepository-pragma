@@ -3,12 +3,10 @@ package com.kevin.emazon.infraestructure.controllers;
 import com.kevin.emazon.application.dto.BrandDto;
 import com.kevin.emazon.application.handler.IBrandHandler;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/brand")
@@ -23,7 +21,7 @@ public class BrandController {
     }
 
     @GetMapping("/getall/{order}")
-    public ResponseEntity<List<BrandDto>> getAllBrands(@PathVariable String order, Pageable pageable){
-        return ResponseEntity.status(HttpStatus.OK).body(brandHandler.getAll(order, pageable).getContent());
+    public ResponseEntity<Page<BrandDto>> getAllBrands(@PathVariable String order){
+        return ResponseEntity.status(HttpStatus.OK).body(brandHandler.getAll(order));
     }
 }
