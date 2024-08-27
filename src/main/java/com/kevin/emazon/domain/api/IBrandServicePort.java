@@ -1,11 +1,11 @@
 package com.kevin.emazon.domain.api;
 
 import com.kevin.emazon.domain.model.Brand;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface IBrandServicePort {
     void saveBrand(Brand brand);
-    Page<Brand> getAll(String order, Pageable pageable);
+    List<Brand> getAll(String order);
 
 }

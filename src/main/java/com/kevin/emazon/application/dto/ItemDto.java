@@ -1,5 +1,6 @@
 package com.kevin.emazon.application.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ItemDto {
+    @NotNull
     private String name;
 
     private Double price;

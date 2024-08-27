@@ -3,9 +3,11 @@ package com.kevin.emazon.domain.usecase;
 import com.kevin.emazon.domain.api.IBrandServicePort;
 import com.kevin.emazon.domain.model.Brand;
 import com.kevin.emazon.domain.spi.IBrandPersistentPort;
+import com.kevin.emazon.domain.util.UtilClassDomain;
 import com.kevin.emazon.infraestructure.exceptions.BrandException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
+
+import java.util.List;
 
 public class BrandUseCase implements IBrandServicePort {
     private final IBrandPersistentPort persistentPort;
@@ -16,21 +18,18 @@ public class BrandUseCase implements IBrandServicePort {
 
     @Override
     public void saveBrand(Brand brand) {
-        if (!isValidBrand(brand)){
-            throw new BrandException("El nombre o la descripción supera el total de caracteres. Nombre(Max 50) Descripcion(Max 90)");
+        if (persistentPort.existByNameIgnoreCase(brand.getName())){
+            throw new BrandException("Esta marca ya existe");
         }
         persistentPort.saveBrand(brand);
+    }
 
-    }
-    private boolean isValidBrand(Brand brand){
-        if (brand.getName().isBlank() || brand.getDescription().isBlank()){
-            throw new BrandException("Ni el nombre ni la descripción pueden ser vacíos");
-        }
-        return (brand.getName().length() < 50) && (brand.getDescription().length() < 90);
-    }
 
     @Override
-    public Page<Brand> getAll(String order, Pageable pageable) {
-        return persistentPort.getAll(order, pageable);
+    public List<Brand> getAll(String order) {
+
+        UtilClassDomain.validateOrderingMethod(order);
+
+        return persistentPort.getAll(order);
     }
 }
