@@ -38,11 +38,15 @@ public class ConstantUtilClass {
 
         public static final String NN_PRICE = "NullPriceItemException: El precio del item no puede ser null";
         public static final String MIN_PRICE = "InvalidMinPriceValue: El precio del item no puede ser menor a 500";
-        public static final String MAX_PRICE = "InvalidMaxPrice: El precio del Item no puede ser mayor a 10'000.000";
+        public static final String MAX_PRICE = "InvalidMaxPrice: El precio del Item no puede ser mayor a 20'000.000";
+
+        public static final String NN_STOCK = "NullStockException: La cantidad de stock no puede ser null";
+        public static final String MIN_STOCK = "InvalidStockValue: La cantidad de Stock no puede ser menor a 0";
 
         public static final String NN_BRAND = "NullBrandException: La marca a la que pertenece el item no puede ser null";
 
-        public static final String NN_CATEGORIES = "";
-    }
+        public static final String NN_CATEGORIES = "NullCategoriesException: Las categorías del item no pueden ser nulas";
+        public static final String SIZE_CATEGORIES = "InvalidSizeCategories: El número de categorías no puede ser menor a 1 ni mayor a 3";
 
+    }
 }
