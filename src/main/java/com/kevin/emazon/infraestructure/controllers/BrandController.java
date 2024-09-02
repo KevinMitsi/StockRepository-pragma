@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,6 +16,7 @@ public class BrandController {
     private final IBrandHandler brandHandler;
 
     @PostMapping("/new")
+    @Secured("ROLE_ADMINISTRADOR")
     public ResponseEntity<String> createBrand(@RequestBody BrandDto brandDto){
         brandHandler.saveBrand(brandDto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Felicidades ha creado la marca: "+brandDto.getName());

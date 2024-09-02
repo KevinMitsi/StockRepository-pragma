@@ -1,4 +1,4 @@
-package com.kevin.emazon.infraestructure.config;
+package com.kevin.emazon.infraestructure.controllers.handler;
 
 import com.kevin.emazon.application.dto.ExceptionResponseDto;
 import com.kevin.emazon.infraestructure.exceptions.BrandException;

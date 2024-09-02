@@ -9,6 +9,7 @@ import com.kevin.emazon.domain.spi.IItemCategoryPersistentPort;
 import com.kevin.emazon.domain.spi.IItemPersistentPort;
 import com.kevin.emazon.infraestructure.exceptions.BrandException;
 import com.kevin.emazon.infraestructure.exceptions.CategoryException;
+import com.kevin.emazon.infraestructure.exceptions.InvalidOrderingMethodException;
 import com.kevin.emazon.infraestructure.exceptions.ItemException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -206,7 +207,7 @@ class ItemUseCaseTest {
             String invalidOrder = "invalid";
 
             // Act & Assert
-            assertThrows(ItemException.class, () -> itemUseCase.getAllByBrandName(brandName, invalidOrder));
+            assertThrows(InvalidOrderingMethodException.class, () -> itemUseCase.getAllByBrandName(brandName, invalidOrder));
             verify(itemPersistentPort, never()).getItemsByBrandName(anyString(), anyString());
         }
 
@@ -217,7 +218,7 @@ class ItemUseCaseTest {
             String invalidOrder = "invalid";
 
             // Act & Assert
-            assertThrows(ItemException.class, () -> itemUseCase.getAllByCategoryName(categoryName, invalidOrder));
+            assertThrows(InvalidOrderingMethodException.class, () -> itemUseCase.getAllByCategoryName(categoryName, invalidOrder));
             verify(itemPersistentPort, never()).getItemsByCategoryName(anyString(), anyString());
         }
 
@@ -228,7 +229,7 @@ class ItemUseCaseTest {
             String invalidOrder = "invalid";
 
             // Act & Assert
-            assertThrows(ItemException.class, () -> itemUseCase.getAllByName(itemName, invalidOrder));
+            assertThrows(InvalidOrderingMethodException.class, () -> itemUseCase.getAllByName(itemName, invalidOrder));
             verify(itemPersistentPort, never()).getItemsByName(anyString(), anyString());
         }
     }

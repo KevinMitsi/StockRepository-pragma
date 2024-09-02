@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class CategoryController {
     private final ICategoryHandler categoryHandler;
     @PostMapping("/new")
+    @Secured("ROLE_ADMINISTRADOR")
     public ResponseEntity<String> createCategory(@Valid @RequestBody CategoryDto categoryRequest) {
         categoryHandler.saveCategory(categoryRequest);
         return  ResponseEntity.status(HttpStatus.CREATED).body("Felicidades, ha creado satisfactoriamente su categoría " +categoryRequest.getName());
