@@ -10,6 +10,7 @@ import com.kevin.emazon.infraestructure.exceptions.BrandException;
 import java.util.List;
 
 public class BrandUseCase implements IBrandServicePort {
+    public static final String ALREADY_CREATED_BRAND_MESSAGE = "Esta marca ya existe";
     private final IBrandPersistentPort persistentPort;
 
     public BrandUseCase(IBrandPersistentPort persistentPort) {
@@ -19,7 +20,7 @@ public class BrandUseCase implements IBrandServicePort {
     @Override
     public void saveBrand(Brand brand) {
         if (persistentPort.existByNameIgnoreCase(brand.getName())){
-            throw new BrandException("Esta marca ya existe");
+            throw new BrandException(ALREADY_CREATED_BRAND_MESSAGE);
         }
         persistentPort.saveBrand(brand);
     }

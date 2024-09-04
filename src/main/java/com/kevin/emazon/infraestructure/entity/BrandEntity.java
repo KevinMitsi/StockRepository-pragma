@@ -11,6 +11,8 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 public class BrandEntity {
+    public static final String BRAND_KEY = "brand";
+    public static final String ITEMS_COLUMN_NAME = "item_category_id";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,8 +21,8 @@ public class BrandEntity {
 
     private String description;
 
-    @OneToMany(mappedBy = "brand")
-    @Column(name = "item_category_id")
+    @OneToMany(mappedBy = BRAND_KEY)
+    @Column(name = ITEMS_COLUMN_NAME)
     private List<ItemEntity> items;
 
 }

@@ -13,13 +13,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1/brand")
 @RequiredArgsConstructor
 public class BrandController {
+    public static final String ROLE_ADMINISTRATOR = "ROLE_ADMINISTRADOR";
+    public static final String CREATED_BRAND_MESSAGE = "Felicidades ha creado la marca: ";
+
     private final IBrandHandler brandHandler;
 
     @PostMapping("/new")
-    @Secured("ROLE_ADMINISTRADOR")
+    @Secured(ROLE_ADMINISTRATOR)
     public ResponseEntity<String> createBrand(@RequestBody BrandDto brandDto){
         brandHandler.saveBrand(brandDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Felicidades ha creado la marca: "+brandDto.getName());
+        return ResponseEntity.status(HttpStatus.CREATED).body(CREATED_BRAND_MESSAGE +brandDto.getName());
     }
 
     @GetMapping("/getall/{order}")

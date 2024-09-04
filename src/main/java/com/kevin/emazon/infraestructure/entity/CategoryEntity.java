@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 public class CategoryEntity {
+    public static final String CATEGORY_KEY = "category";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,7 +22,7 @@ public class CategoryEntity {
     private String description;
 
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = CATEGORY_KEY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemCategoryEntity> itemCategories;
 
 

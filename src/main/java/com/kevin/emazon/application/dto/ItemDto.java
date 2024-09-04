@@ -1,6 +1,5 @@
 package com.kevin.emazon.application.dto;
 
-import com.kevin.emazon.application.util.ConstantUtilClass;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,31 +8,39 @@ import lombok.Setter;
 
 import java.util.Set;
 
+import static com.kevin.emazon.application.util.ConstantUtilClass.ItemErrorMsg.*;
+
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ItemDto {
 
-    @NotNull(message = ConstantUtilClass.ItemErrorMsg.NN_NAME)
-    @NotBlank(message = ConstantUtilClass.ItemErrorMsg.NB_NAME)
-    @Size(message = ConstantUtilClass.ItemErrorMsg.S_NAME)
+    private static final int MIN_STOCK_QUANTITY_VALUE = 0;
+    private static final int MAX_PRICE_VALUE = 20000000;
+    private static final int MIN_PRICE_VALUE = 500;
+    private static final int MAX_CATEGORIES_AMOUNT = 3;
+
+
+    @NotNull(message = NN_NAME)
+    @NotBlank(message = NB_NAME)
+    @Size(message = S_NAME)
     private String name;
 
-    @NotNull(message = ConstantUtilClass.ItemErrorMsg.NN_PRICE)
-    @Min(message = ConstantUtilClass.ItemErrorMsg.MIN_PRICE, value = 500)
-    @Max(message = ConstantUtilClass.ItemErrorMsg.MAX_PRICE,value = 20000000)
+    @NotNull(message = NN_PRICE)
+    @Min(message = MIN_PRICE, value = MIN_PRICE_VALUE)
+    @Max(message = MAX_PRICE,value = MAX_PRICE_VALUE)
     private Double price;
 
-    @Min(message = ConstantUtilClass.ItemErrorMsg.MIN_STOCK, value = 0)
-    @NotNull(message = ConstantUtilClass.ItemErrorMsg.NN_STOCK)
+    @Min(message = MIN_STOCK, value = MIN_STOCK_QUANTITY_VALUE)
+    @NotNull(message = NN_STOCK)
     private Long stockQuantity;
 
-    @NotNull(message = ConstantUtilClass.ItemErrorMsg.NN_BRAND)
+    @NotNull(message = NN_BRAND)
     private BrandDto brand;
 
-    @NotNull(message = ConstantUtilClass.ItemErrorMsg.NN_CATEGORIES)
-    @Size(message = ConstantUtilClass.ItemErrorMsg.SIZE_CATEGORIES, max = 3)
+    @NotNull(message = NN_CATEGORIES)
+    @Size(message = SIZE_CATEGORIES, max = MAX_CATEGORIES_AMOUNT)
     private Set<CategoryDto> categories;
 
 }

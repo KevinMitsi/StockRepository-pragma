@@ -12,6 +12,7 @@ import java.util.List;
 public class CategoryUseCase implements ICategoryServicePort {
 
 
+    public static final String ALREADY_CREATED_CATEGORY_MESSAGE = "Categoría ya creada";
     private final ICategoryPersistentPort categoryPersistentPort;
 
     public CategoryUseCase(ICategoryPersistentPort categoryPersistentPort) {
@@ -30,7 +31,7 @@ public class CategoryUseCase implements ICategoryServicePort {
     @Override
     public void saveCategory(Category category) {
         if (categoryPersistentPort.existByNameIgnoreCase(category.getName())){
-            throw new CategoryException("Categoría ya creada");
+            throw new CategoryException(ALREADY_CREATED_CATEGORY_MESSAGE);
         }
         categoryPersistentPort.saveCategory(category);
     }

@@ -17,6 +17,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @Component
 public class ItemJpaAdapter implements IItemPersistentPort {
+    private static final String SORT_BY = "name";
+    private static final String SORTING_KEY = "desc";
+
     private final ItemRepository itemRepository;
     private final IItemEntityMapper itemEntityMapper;
     @Override
@@ -46,8 +49,8 @@ public class ItemJpaAdapter implements IItemPersistentPort {
     }
 
     private Pageable createPageRequest(String order) {
-        Sort sort = Sort.by("name").ascending();
-        if ("desc".equalsIgnoreCase(order)) {
+        Sort sort = Sort.by(SORT_BY).ascending();
+        if (SORTING_KEY.equalsIgnoreCase(order)) {
             sort = sort.descending();
         }
         return PageRequest.of(0, 10, sort);

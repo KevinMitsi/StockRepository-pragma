@@ -13,6 +13,10 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 public class ItemEntity {
+    private static final String BRAND_KEY = "brand_id";
+    private static final String ITEM_KEY = "item";
+    private static final boolean ORPHAN_REMOVAL_VALUE = true;
+    private static final String ITEM_CATEGORY_COLUMN_NAME = "item_category_id";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,10 +28,10 @@ public class ItemEntity {
     private Long stockQuantity;
 
     @ManyToOne
-    @JoinColumn(name = "brand_id")
+    @JoinColumn(name = BRAND_KEY)
     private BrandEntity brand;
 
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Column(name = "item_category_id")
+    @OneToMany(mappedBy = ITEM_KEY, cascade = CascadeType.ALL, orphanRemoval = ORPHAN_REMOVAL_VALUE)
+    @Column(name = ITEM_CATEGORY_COLUMN_NAME)
     private List<ItemCategoryEntity> itemCategories;
 }

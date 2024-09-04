@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api/v1/item")
 public class ItemController {
+    private static final String CREATED_ITEM_MESSAGE = "Item creado correctamente ";
+
     private final IItemHandler itemHandler;
     @PostMapping("/new")
     @Secured("ROLE_ADMINISTRADOR")
     public ResponseEntity<String> createItem(@RequestBody ItemDto itemDto){
         itemHandler.saveItem(itemDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Item creado correctamente "+ itemDto.getName());
+        return ResponseEntity.status(HttpStatus.CREATED).body(CREATED_ITEM_MESSAGE + itemDto.getName());
     }
 
     @GetMapping("/getAll/byBrand/{name}/{order}")

@@ -16,12 +16,16 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Validated
 public class CategoryController {
+    private static final String CREATED_CATEGORY_MESSAGE = "Felicidades, ha creado satisfactoriamente su categoría ";
+    private static final String ROLE_ADMINISTRATOR = "ROLE_ADMINISTRADOR";
+
     private final ICategoryHandler categoryHandler;
+
     @PostMapping("/new")
-    @Secured("ROLE_ADMINISTRADOR")
+    @Secured(ROLE_ADMINISTRATOR)
     public ResponseEntity<String> createCategory(@Valid @RequestBody CategoryDto categoryRequest) {
         categoryHandler.saveCategory(categoryRequest);
-        return  ResponseEntity.status(HttpStatus.CREATED).body("Felicidades, ha creado satisfactoriamente su categoría " +categoryRequest.getName());
+        return  ResponseEntity.status(HttpStatus.CREATED).body(CREATED_CATEGORY_MESSAGE +categoryRequest.getName());
     }
 
     @GetMapping("/getall/{ordering}")
