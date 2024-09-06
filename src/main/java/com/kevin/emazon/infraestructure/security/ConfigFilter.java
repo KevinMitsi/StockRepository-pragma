@@ -22,9 +22,7 @@ public class ConfigFilter {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("api/v1/brand/getall/**").permitAll()
-                        .requestMatchers("api/v1/category/getall/**").permitAll()
-                        .requestMatchers("api/v1/item/getAll/**").permitAll()
+                        .requestMatchers("**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
