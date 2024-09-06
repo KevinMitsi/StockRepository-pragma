@@ -37,4 +37,9 @@ public class ItemController {
     public ResponseEntity<Page<ItemResponseDto>> getAllByName(@PathVariable String name, @PathVariable String order){
         return ResponseEntity.status(HttpStatus.OK).body(itemHandler.getAllByName(name, order));
     }
+    @GetMapping("/exist/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public boolean existById(@PathVariable Long id){
+        return itemHandler.existById(id);
+    }
 }

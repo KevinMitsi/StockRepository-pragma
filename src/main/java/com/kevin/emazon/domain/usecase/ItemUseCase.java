@@ -72,6 +72,11 @@ public class ItemUseCase implements IItemServicePort {
         return itemsWithCategories;
     }
 
+    @Override
+    public boolean existById(Long id) {
+        return itemPersistentPort.existById(id);
+    }
+
     private void saveItemCategory(Item item, List<Category> categories) {
 
         List<ItemCategory>list=categories.stream().map(category -> new ItemCategory(null, item, category)).toList();

@@ -9,4 +9,6 @@ public interface IItemPersistentPort {
     List<Item> getItemsByCategoryName(String categoryName, String order);
     List<Item> getItemsByBrandName(String brandName, String order);
     List<Item> getItemsByName(String itemName, String order);
+
+    boolean existById(Long id);
 }
