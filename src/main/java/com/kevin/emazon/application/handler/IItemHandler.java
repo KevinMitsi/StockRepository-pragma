@@ -12,5 +12,7 @@ public interface IItemHandler {
     Page<ItemResponseDto> getAllByCategoryName(String categoryName, String order);
     Page<ItemResponseDto> getAllByName(String itemName, String order);
 
+    void updateStockItem(Long itemId, Long amount);
+
     boolean existById(Long id);
 }

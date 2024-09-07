@@ -49,6 +49,13 @@ public class ItemJpaAdapter implements IItemPersistentPort {
     }
 
     @Override
+    public void updateItemStock(Long itemId, Long amount) {
+        ItemEntity item = itemRepository.findById(itemId).orElseThrow();
+        item.setStockQuantity(item.getStockQuantity()+amount);
+        itemRepository.save(item);
+    }
+
+    @Override
     public boolean existById(Long id) {
         return itemRepository.existsById(id);
     }

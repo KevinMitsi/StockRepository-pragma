@@ -12,6 +12,7 @@ import com.kevin.emazon.domain.spi.IItemPersistentPort;
 import com.kevin.emazon.domain.util.UtilClassDomain;
 import com.kevin.emazon.infraestructure.exceptions.BrandException;
 import com.kevin.emazon.infraestructure.exceptions.CategoryException;
+import com.kevin.emazon.infraestructure.exceptions.IncreaseItemStockException;
 import com.kevin.emazon.infraestructure.exceptions.ItemException;
 
 import java.util.HashSet;
@@ -21,6 +22,8 @@ import java.util.Set;
 
 
 public class ItemUseCase implements IItemServicePort {
+    public static final String ITEM_NOTFOUND_EXCEPTION_MESSAGE = "ItemNotfoundException";
+    public static final String INCREASE_ITEM_STOCK_EXCEPTION_MESSAGE = "El valor que está intentando agregar  al item no es valido";
     private final IItemPersistentPort itemPersistentPort;
     private final ICategoryPersistentPort categoryPersistentPort;
     private final IBrandPersistentPort brandPersistentPort;
@@ -73,9 +76,30 @@ public class ItemUseCase implements IItemServicePort {
     }
 
     @Override
+    public void updateStockItem(Long itemId, Long amount) {
+        if (!existById(itemId)){
+            throw new ItemException(ITEM_NOTFOUND_EXCEPTION_MESSAGE);
+        }
+        if (amount == null || amount<=0){
+            throw new IncreaseItemStockException(INCREASE_ITEM_STOCK_EXCEPTION_MESSAGE);
+        }
+
+
+    }
+
+    @Override
     public boolean existById(Long id) {
         return itemPersistentPort.existById(id);
     }
+
+
+
+
+
+
+
+
+
 
     private void saveItemCategory(Item item, List<Category> categories) {
 

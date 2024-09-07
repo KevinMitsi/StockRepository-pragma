@@ -42,6 +42,11 @@ public class ItemHandler implements IItemHandler {
     }
 
     @Override
+    public void updateStockItem(Long itemId, Long amount) {
+        itemServicePort.updateStockItem(itemId, amount);
+    }
+
+    @Override
     public boolean existById(Long id) {
         return itemServicePort.existById(id);
     }
