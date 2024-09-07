@@ -19,7 +19,6 @@ public class ItemController {
     private static final String CREATED_ITEM_MESSAGE = "Item creado correctamente ";
     public static final String ROLE_ADMINISTRATOR = "ROLE_ADMINISTRADOR";
     public static final String ROLE_AUX_BODEGA = "ROLE_AUX_BODEGA";
-    public static final String SUCCESFUL_ADDED_STOCK_MESSAGE = "Ha agregado exitosamente stock al item ";
 
     private final IItemHandler itemHandler;
 
@@ -55,8 +54,8 @@ public class ItemController {
 
     @PatchMapping("/updateQuantity")
     @Secured({ROLE_AUX_BODEGA, ROLE_ADMINISTRATOR})
-    public ResponseEntity<String> updateQuantityOfItem(@RequestBody UpdateItemQuantityRequest updateRequest){
-        return ResponseEntity.status(200).body(SUCCESFUL_ADDED_STOCK_MESSAGE + updateRequest.getItemId());
+    public void updateQuantityOfItem(@RequestBody UpdateItemQuantityRequest updateRequest){
+        itemHandler.updateStockItem(updateRequest.getItemId(), updateRequest.getAmountSupplied());
     }
 
 
