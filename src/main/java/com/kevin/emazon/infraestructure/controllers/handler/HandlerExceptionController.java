@@ -3,6 +3,7 @@ package com.kevin.emazon.infraestructure.controllers.handler;
 import com.kevin.emazon.application.dto.ExceptionResponseDto;
 import com.kevin.emazon.infraestructure.exceptions.BrandException;
 import com.kevin.emazon.infraestructure.exceptions.CategoryException;
+import com.kevin.emazon.infraestructure.exceptions.IncreaseItemStockException;
 import com.kevin.emazon.infraestructure.exceptions.ItemException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,10 @@ public class HandlerExceptionController {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ExceptionResponseDto> inCaseThrowingIllegalArgument(Exception e){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionResponseDto("IllegalArgument Exception", e.getMessage(), HttpStatus.BAD_REQUEST));
+    }
+    @ExceptionHandler(IncreaseItemStockException.class)
+    public ResponseEntity<ExceptionResponseDto> inCaseThrowingIncreaseItemStock(Exception e){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionResponseDto("IncreaseItemStock Exception", e.getMessage(), HttpStatus.BAD_REQUEST));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

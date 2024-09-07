@@ -41,6 +41,16 @@ public class ItemHandler implements IItemHandler {
         return ListToPageConversor.convertListIntoPage(convertList(itemServicePort.getAllByName(itemName, order)));
     }
 
+    @Override
+    public void updateStockItem(Long itemId, Long amount) {
+        itemServicePort.updateStockItem(itemId, amount);
+    }
+
+    @Override
+    public boolean existById(Long id) {
+        return itemServicePort.existById(id);
+    }
+
     private List<ItemResponseDto> convertList(List<Item> items) {
         List<ItemResponseDto>itemResponseDtoList = items.stream()
                 .map(itemResponseDtoMapper::itemToItemResponseDto)

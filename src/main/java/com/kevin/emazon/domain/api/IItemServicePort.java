@@ -9,4 +9,8 @@ public interface IItemServicePort {
     List<Item> getAllByBrandName(String brandName, String order);
     List<Item> getAllByCategoryName(String categoryName, String order);
     List<Item> getAllByName(String itemName, String order);
+
+    void updateStockItem(Long itemId, Long amount);
+
+    boolean existById(Long id);
 }
