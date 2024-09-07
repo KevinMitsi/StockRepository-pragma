@@ -52,7 +52,7 @@ public class ItemController {
     }
 
 
-    @PatchMapping("/updateQuantity")
+    @PostMapping("/updateQuantity")
     @Secured({ROLE_AUX_BODEGA, ROLE_ADMINISTRATOR})
     public void updateQuantityOfItem(@RequestBody UpdateItemQuantityRequest updateRequest){
         itemHandler.updateStockItem(updateRequest.getItemId(), updateRequest.getAmountSupplied());
