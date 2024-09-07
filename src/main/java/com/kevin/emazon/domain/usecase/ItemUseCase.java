@@ -83,8 +83,7 @@ public class ItemUseCase implements IItemServicePort {
         if (amount == null || amount<=0){
             throw new IncreaseItemStockException(INCREASE_ITEM_STOCK_EXCEPTION_MESSAGE);
         }
-
-
+        itemPersistentPort.updateItemStock(itemId, amount);
     }
 
     @Override
