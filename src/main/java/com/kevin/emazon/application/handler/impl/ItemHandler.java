@@ -51,6 +51,15 @@ public class ItemHandler implements IItemHandler {
         return itemServicePort.existById(id);
     }
 
+    @Override
+    public Long getStockQuantityFromItemId(Long itemId) {
+        return itemServicePort.getStockQuantityFromItemId(itemId);
+    }
+
+
+
+
+
     private List<ItemResponseDto> convertList(List<Item> items) {
         List<ItemResponseDto>itemResponseDtoList = items.stream()
                 .map(itemResponseDtoMapper::itemToItemResponseDto)

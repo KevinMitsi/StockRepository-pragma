@@ -11,6 +11,6 @@ public interface IItemServicePort {
     List<Item> getAllByName(String itemName, String order);
 
     void updateStockItem(Long itemId, Long amount);
-
     boolean existById(Long id);
+    Long getStockQuantityFromItemId(Long itemId);
 }

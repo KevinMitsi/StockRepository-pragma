@@ -60,6 +60,11 @@ public class ItemJpaAdapter implements IItemPersistentPort {
         return itemRepository.existsById(id);
     }
 
+    @Override
+    public Long getStockQuantityFromItemId(Long itemId) {
+        return itemRepository.findStockQuantityByItemId(itemId);
+    }
+
     private Pageable createPageRequest(String order) {
         Sort sort = Sort.by(SORT_BY).ascending();
         if (SORTING_KEY.equalsIgnoreCase(order)) {

@@ -91,7 +91,13 @@ public class ItemUseCase implements IItemServicePort {
         return itemPersistentPort.existById(id);
     }
 
-
+    @Override
+    public Long getStockQuantityFromItemId(Long itemId) {
+        if (!existById(itemId)){
+            throw new ItemException("El item con este id no existe");
+        }
+        return itemPersistentPort.getStockQuantityFromItemId(itemId);
+    }
 
 
 

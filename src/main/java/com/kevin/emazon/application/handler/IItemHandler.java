@@ -15,4 +15,6 @@ public interface IItemHandler {
     void updateStockItem(Long itemId, Long amount);
 
     boolean existById(Long id);
+
+    Long getStockQuantityFromItemId(Long itemId);
 }
