@@ -46,18 +46,22 @@ public class ItemController {
 
     @GetMapping("/exist/{id}")
     @ResponseStatus(code = HttpStatus.OK)
-    @Secured({ROLE_AUX_BODEGA, ROLE_ADMINISTRATOR})
     public boolean existById(@PathVariable Long id){
         return itemHandler.existById(id);
     }
-
-
+    @GetMapping("/isEnough/{id}/{quantity}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public boolean isEnoughInStock(@PathVariable Long id, @PathVariable Long quantity){
+        return itemHandler.isEnoughInStock(id, quantity);
+    }
 
     @PostMapping("/updateQuantity")
     @Secured({ROLE_AUX_BODEGA, ROLE_ADMINISTRATOR})
     public void updateQuantityOfItem(@RequestBody UpdateItemQuantityRequest updateRequest){
         itemHandler.updateStockItem(updateRequest.getItemId(), updateRequest.getAmountSupplied());
     }
+
+
 
 
 

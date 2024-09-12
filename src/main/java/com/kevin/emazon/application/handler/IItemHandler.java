@@ -16,5 +16,5 @@ public interface IItemHandler {
 
     boolean existById(Long id);
 
-    Long getStockQuantityFromItemId(Long itemId);
+    boolean isEnoughInStock(Long itemId, Long quantity);
 }

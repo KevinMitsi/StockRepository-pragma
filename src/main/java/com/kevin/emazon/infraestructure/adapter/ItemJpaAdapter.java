@@ -61,8 +61,8 @@ public class ItemJpaAdapter implements IItemPersistentPort {
     }
 
     @Override
-    public Long getStockQuantityFromItemId(Long itemId) {
-        return itemRepository.findStockQuantityByItemId(itemId);
+    public boolean isEnoughInStock(Long itemId, Long quantity) {
+        return itemRepository.findStockQuantityByItemId(itemId) >= quantity;
     }
 
     private Pageable createPageRequest(String order) {

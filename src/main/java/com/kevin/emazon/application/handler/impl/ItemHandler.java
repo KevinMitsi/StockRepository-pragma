@@ -52,8 +52,8 @@ public class ItemHandler implements IItemHandler {
     }
 
     @Override
-    public Long getStockQuantityFromItemId(Long itemId) {
-        return itemServicePort.getStockQuantityFromItemId(itemId);
+    public boolean isEnoughInStock(Long itemId, Long quantity) {
+        return itemServicePort.isEnoughInStock(itemId, quantity);
     }
 
 
