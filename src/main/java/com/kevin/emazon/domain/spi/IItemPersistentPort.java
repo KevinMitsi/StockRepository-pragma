@@ -12,4 +12,6 @@ public interface IItemPersistentPort {
 
     void updateItemStock(Long itemId, Long amount);
     boolean existById(Long id);
+
+    List<Item> getItemsByIds(List<Long> itemsIds);
 }
