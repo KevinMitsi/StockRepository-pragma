@@ -55,7 +55,7 @@ public class ItemUseCase implements IItemServicePort {
         UtilClassDomain.validateOrderingMethod(order);
 
         List<Item> itemsWithCategories = itemPersistentPort.getItemsByBrandName(brandName, order);
-        fullCategoriesInItems(itemsWithCategories);
+        fillCategoriesInItems(itemsWithCategories);
 
         return itemsWithCategories;
     }
@@ -65,7 +65,7 @@ public class ItemUseCase implements IItemServicePort {
         UtilClassDomain.validateOrderingMethod(order);
 
         List<Item> itemsWithCategories = itemPersistentPort.getItemsByCategoryName(categoryName, order);
-        fullCategoriesInItems(itemsWithCategories);
+        fillCategoriesInItems(itemsWithCategories);
 
         return itemsWithCategories;
     }
@@ -75,7 +75,7 @@ public class ItemUseCase implements IItemServicePort {
         UtilClassDomain.validateOrderingMethod(order);
 
         List<Item> itemsWithCategories=itemPersistentPort.getItemsByName(itemName, order);
-        fullCategoriesInItems(itemsWithCategories);
+        fillCategoriesInItems(itemsWithCategories);
 
         return itemsWithCategories;
     }
@@ -106,6 +106,7 @@ public class ItemUseCase implements IItemServicePort {
 
     public boolean areCategoriesValid(List<Long> itemsIds) {
         List<Item> items = itemPersistentPort.getItemsByIds(itemsIds);
+        fillCategoriesInItems(items);
 
         Map<String, Long> categoryCount = items.stream()
                 .flatMap(item -> item.getCategories().stream())
@@ -163,7 +164,7 @@ public class ItemUseCase implements IItemServicePort {
         }
     }
 
-    private void fullCategoriesInItems(List<Item> listItems) {
+    private void fillCategoriesInItems(List<Item> listItems) {
         listItems.forEach(item -> item.setCategories(itemCategoryPersistentPort.findCategoriesByItemId(item.getId())));
     }
 }
