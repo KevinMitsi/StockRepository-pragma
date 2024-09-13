@@ -97,6 +97,13 @@ public class ItemUseCase implements IItemServicePort {
     }
 
     @Override
+    public boolean isEnoughInStock(Long itemId, Long quantity) {
+        if (!existById(itemId)){
+            throw new ItemException("El item con este id no existe");
+        }
+        return itemPersistentPort.isEnoughInStock(itemId, quantity);
+    }
+
     public boolean areCategoriesValid(List<Long> itemsIds) {
         List<Item> items = itemPersistentPort.getItemsByIds(itemsIds);
 

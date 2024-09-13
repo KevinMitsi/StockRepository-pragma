@@ -52,6 +52,10 @@ public class ItemHandler implements IItemHandler {
     }
 
     @Override
+    public boolean isEnoughInStock(Long itemId, Long quantity) {
+        return itemServicePort.isEnoughInStock(itemId, quantity);
+    }
+
     public boolean validateCategoryLimit(List<Long> itemsIds) {
         return itemServicePort.areCategoriesValid(itemsIds);
     }
