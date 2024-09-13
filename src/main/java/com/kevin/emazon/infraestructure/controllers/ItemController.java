@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RequiredArgsConstructor
 @RestController
@@ -59,6 +61,11 @@ public class ItemController {
     @Secured({ROLE_AUX_BODEGA, ROLE_ADMINISTRATOR})
     public void updateQuantityOfItem(@RequestBody UpdateItemQuantityRequest updateRequest){
         itemHandler.updateStockItem(updateRequest.getItemId(), updateRequest.getAmountSupplied());
+    }
+
+    @PostMapping("/validateCategoryLimit")
+    public boolean validateCategoryLimit(@RequestBody List<Long> itemIds) {
+        return itemHandler.validateCategoryLimit(itemIds);
     }
 
 

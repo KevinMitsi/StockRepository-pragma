@@ -56,9 +56,9 @@ public class ItemHandler implements IItemHandler {
         return itemServicePort.isEnoughInStock(itemId, quantity);
     }
 
-
-
-
+    public boolean validateCategoryLimit(List<Long> itemsIds) {
+        return itemServicePort.areCategoriesValid(itemsIds);
+    }
 
     private List<ItemResponseDto> convertList(List<Item> items) {
         List<ItemResponseDto>itemResponseDtoList = items.stream()

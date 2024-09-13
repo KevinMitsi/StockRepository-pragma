@@ -4,6 +4,8 @@ import com.kevin.emazon.application.dto.ItemDto;
 import com.kevin.emazon.application.dto.response.ItemResponseDto;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 
 public interface IItemHandler {
     void saveItem(ItemDto itemDto);
@@ -15,6 +17,6 @@ public interface IItemHandler {
     void updateStockItem(Long itemId, Long amount);
 
     boolean existById(Long id);
-
     boolean isEnoughInStock(Long itemId, Long quantity);
+    boolean validateCategoryLimit(List<Long> itemsIds);
 }

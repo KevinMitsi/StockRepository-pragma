@@ -13,4 +13,5 @@ public interface IItemServicePort {
     void updateStockItem(Long itemId, Long amount);
     boolean existById(Long id);
     boolean isEnoughInStock(Long itemId, Long quantity);
+    boolean areCategoriesValid(List<Long> itemsIds);
 }

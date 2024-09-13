@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
     Page<ItemEntity> findAllByBrand_NameIgnoreCase(String brandName, Pageable pageable);
@@ -17,5 +19,7 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
 
     @Query("SELECT i.stockQuantity FROM ItemEntity i WHERE i.id = :itemId")
     Long findStockQuantityByItemId(Long itemId);
+
+    List<ItemEntity> findByIdIn(List<Long> itemIds);
 
 }

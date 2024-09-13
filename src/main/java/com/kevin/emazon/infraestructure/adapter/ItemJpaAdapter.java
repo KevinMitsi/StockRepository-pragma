@@ -65,6 +65,17 @@ public class ItemJpaAdapter implements IItemPersistentPort {
         return itemRepository.findStockQuantityByItemId(itemId) >= quantity;
     }
 
+    public List<Item> getItemsByIds(List<Long> itemsIds) {
+        return itemRepository.findByIdIn(itemsIds).stream().map(itemEntityMapper::toItem).toList();
+    }
+
+
+
+
+
+
+
+
     private Pageable createPageRequest(String order) {
         Sort sort = Sort.by(SORT_BY).ascending();
         if (SORTING_KEY.equalsIgnoreCase(order)) {
