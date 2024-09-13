@@ -51,6 +51,11 @@ public class ItemHandler implements IItemHandler {
         return itemServicePort.existById(id);
     }
 
+    @Override
+    public boolean validateCategoryLimit(List<Long> itemsIds) {
+        return itemServicePort.areCategoriesValid(itemsIds);
+    }
+
     private List<ItemResponseDto> convertList(List<Item> items) {
         List<ItemResponseDto>itemResponseDtoList = items.stream()
                 .map(itemResponseDtoMapper::itemToItemResponseDto)

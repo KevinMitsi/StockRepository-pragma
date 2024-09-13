@@ -17,13 +17,18 @@ import com.kevin.emazon.infraestructure.exceptions.ItemException;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-
+import java.util.stream.Collectors;
 
 
 public class ItemUseCase implements IItemServicePort {
     public static final String ITEM_NOTFOUND_EXCEPTION_MESSAGE = "ItemNotfoundException";
     public static final String INCREASE_ITEM_STOCK_EXCEPTION_MESSAGE = "El valor que está intentando agregar  al item no es valido";
+    public static final String BRAND_DONT_EXIST_MESSAGE = "La marca que intenta asignar a este item no existe";
+    public static final String WRONG_CATEGORY_LIST_CREATION_MESSAGE = "La lista de categorías no puede estar vacía, ni puede tener más de 3 categorías";
+    public static final String REPEATED_CATEGORIES_MESSAGE = "Hay categorías repetidas";
+    public static final String CATEGORY_DOESNT_EXIST_MESSAGE = "La categoría que intenta agregar a este item no existe: ";
     private final IItemPersistentPort itemPersistentPort;
     private final ICategoryPersistentPort categoryPersistentPort;
     private final IBrandPersistentPort brandPersistentPort;
@@ -83,8 +88,7 @@ public class ItemUseCase implements IItemServicePort {
         if (amount == null || amount<=0){
             throw new IncreaseItemStockException(INCREASE_ITEM_STOCK_EXCEPTION_MESSAGE);
         }
-
-
+        itemPersistentPort.updateItemStock(itemId, amount);
     }
 
     @Override
@@ -92,7 +96,22 @@ public class ItemUseCase implements IItemServicePort {
         return itemPersistentPort.existById(id);
     }
 
+    @Override
+    public boolean areCategoriesValid(List<Long> itemsIds) {
+        List<Item> items = itemPersistentPort.getItemsByIds(itemsIds);
 
+        Map<String, Long> categoryCount = items.stream()
+                .flatMap(item -> item.getCategories().stream())
+                .collect(Collectors.groupingBy(Category::getName, Collectors.counting()));
+
+        return categoryCount.values().stream().noneMatch(count -> count > 3);
+    }
+
+
+
+
+
+    //Internal Class Methods
 
 
 
@@ -118,22 +137,22 @@ public class ItemUseCase implements IItemServicePort {
     private List<Category> findCategories(List<Category> categories){
         return categories.stream().map(category -> categoryPersistentPort
                 .findByName(category.getName())
-                .orElseThrow(() -> new CategoryException("La categoría "+ category.getName()+ " que intenta agregar a este item no existe")))
+                .orElseThrow(() -> new CategoryException(CATEGORY_DOESNT_EXIST_MESSAGE +category.getName())))
                 .toList();
     }
 
     private Brand findBrand(String name) {
         return brandPersistentPort
                 .findByName(name)
-                .orElseThrow(() -> new BrandException("La marca que intenta asignar a este item no existe"));
+                .orElseThrow(() -> new BrandException(BRAND_DONT_EXIST_MESSAGE));
     }
     private void validateList(List<Category> categories) {
         Set<Category> noRepeatedCategory = new HashSet<>(categories);
         if (categories.isEmpty() || categories.size()>3){
-            throw new ItemException("La lista de categorías no puede estar vacía, ni puede tener más de 3 categorías");
+            throw new ItemException(WRONG_CATEGORY_LIST_CREATION_MESSAGE);
         }
         if (noRepeatedCategory.size()<categories.size()){
-            throw new ItemException("Hay categorías repetidas");
+            throw new ItemException(REPEATED_CATEGORIES_MESSAGE);
         }
     }
 
