@@ -29,6 +29,7 @@ public class ItemUseCase implements IItemServicePort {
     public static final String WRONG_CATEGORY_LIST_CREATION_MESSAGE = "La lista de categorías no puede estar vacía, ni puede tener más de 3 categorías";
     public static final String REPEATED_CATEGORIES_MESSAGE = "Hay categorías repetidas";
     public static final String CATEGORY_DOESNT_EXIST_MESSAGE = "La categoría que intenta agregar a este item no existe: ";
+    public static final String ITEM_NOT_FOUND_EXCEPTION_MESSAGE = "El item con este id no existe";
     private final IItemPersistentPort itemPersistentPort;
     private final ICategoryPersistentPort categoryPersistentPort;
     private final IBrandPersistentPort brandPersistentPort;
@@ -99,7 +100,7 @@ public class ItemUseCase implements IItemServicePort {
     @Override
     public boolean isEnoughInStock(Long itemId, Long quantity) {
         if (!existById(itemId)){
-            throw new ItemException("El item con este id no existe");
+            throw new ItemException(ITEM_NOT_FOUND_EXCEPTION_MESSAGE);
         }
         return itemPersistentPort.isEnoughInStock(itemId, quantity);
     }
