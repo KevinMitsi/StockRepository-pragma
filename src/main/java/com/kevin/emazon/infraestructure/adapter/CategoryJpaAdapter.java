@@ -19,8 +19,8 @@ public class CategoryJpaAdapter implements ICategoryPersistentPort {
 
 
     @Override
-    public List<Category> getCategories(String order) {
-        return categoryRepository.findAll(PageableCreator.createPageable(order))
+    public List<Category> getCategories(String order, Integer pageNumber, Integer pageSize) {
+        return categoryRepository.findAll(PageableCreator.createPageable(order, pageNumber, pageSize))
                 .map(categoryEntityMapper::toCategory).getContent();
     }
 

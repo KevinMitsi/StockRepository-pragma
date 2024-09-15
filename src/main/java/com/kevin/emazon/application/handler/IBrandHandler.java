@@ -6,5 +6,5 @@ import org.springframework.data.domain.Page;
 public interface IBrandHandler {
 
     void saveBrand(BrandDto brandDto);
-    Page<BrandDto> getAll(String order);
+    Page<BrandDto> getAll(String order, Integer pageNumber, Integer pageSize);
 }

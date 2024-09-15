@@ -11,13 +11,14 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import static com.kevin.emazon.infraestructure.util.ConstantUtilInfraestructure.*;
+
 @RestController
 @RequestMapping("api/v1/category")
 @RequiredArgsConstructor
 @Validated
 public class CategoryController {
     private static final String CREATED_CATEGORY_MESSAGE = "Felicidades, ha creado satisfactoriamente su categoría ";
-    private static final String ROLE_ADMINISTRATOR = "ROLE_ADMINISTRADOR";
 
     private final ICategoryHandler categoryHandler;
 
@@ -28,8 +29,10 @@ public class CategoryController {
         return  ResponseEntity.status(HttpStatus.CREATED).body(CREATED_CATEGORY_MESSAGE +categoryRequest.getName());
     }
 
-    @GetMapping("/getall/{ordering}")
-    public ResponseEntity<Page<CategoryDto>> getAllCategories(@PathVariable String ordering){
-        return ResponseEntity.ok().body(categoryHandler.getAllCategories(ordering));
+    @GetMapping("/getAll")
+    public ResponseEntity<Page<CategoryDto>> getAllCategories(@RequestParam(defaultValue = DEFAULT_ORDERING) String order,
+                                                              @RequestParam(defaultValue = DEFAULT_PAGE_NUMBER) Integer pageNumber,
+                                                              @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) Integer pageSize){
+        return ResponseEntity.ok().body(categoryHandler.getAllCategories(order, pageNumber, pageSize));
     }
 }

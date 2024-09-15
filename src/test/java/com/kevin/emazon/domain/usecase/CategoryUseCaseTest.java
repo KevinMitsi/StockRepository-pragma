@@ -19,6 +19,8 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CategoryUseCaseTest {
+    public static final int DEFAULT_PAGE_SIZE = 10;
+    public static final int DEFAULT_PAGE_NUMBER = 1;
     @Mock
     private ICategoryPersistentPort categoryPersistentPort;
 
@@ -64,11 +66,11 @@ class CategoryUseCaseTest {
         @Test
         void getCategories_ShouldThrowException_WhenOrderIsInvalid() {
             // Act & Assert
-            assertThatThrownBy(() -> categoryUseCase.getCategories("invalid"))
+            assertThatThrownBy(() -> categoryUseCase.getCategories("invalid",DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE))
                     .isInstanceOf(InvalidOrderingMethodException.class)
                     .hasMessage("Elija un ordenamiento valido: 'ASC' o 'DESC'");
 
-            verify(categoryPersistentPort, never()).getCategories(any());
+            verify(categoryPersistentPort, never()).getCategories(any(), eq(DEFAULT_PAGE_NUMBER), eq(DEFAULT_PAGE_SIZE));
         }
 
         @Test
@@ -77,17 +79,17 @@ class CategoryUseCaseTest {
             String order = "asc";
             List<Category> expectedCategories = List.of(new Category(null, "Apple", null), new Category(null, "Banana", null));
 
-            when(categoryPersistentPort.getCategories(order)).thenReturn(expectedCategories);
+            when(categoryPersistentPort.getCategories(order, DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE)).thenReturn(expectedCategories);
 
             // Act
-            List<Category> result = categoryUseCase.getCategories(order);
+            List<Category> result = categoryUseCase.getCategories(order,DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE);
 
             // Assert
             assertThat(result).hasSize(2);
             assertThat(result.get(0).getName()).isEqualTo("Apple");
             assertThat(result.get(1).getName()).isEqualTo("Banana");
 
-            verify(categoryPersistentPort, times(1)).getCategories(order);
+            verify(categoryPersistentPort, times(1)).getCategories(order,DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE);
         }
 
         @Test
@@ -96,17 +98,17 @@ class CategoryUseCaseTest {
             String order = "desc";
             List<Category> expectedCategories = List.of(new Category(null, "Banana", null), new Category(null, "Apple", null));
 
-            when(categoryPersistentPort.getCategories(order)).thenReturn(expectedCategories);
+            when(categoryPersistentPort.getCategories(order,DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE)).thenReturn(expectedCategories);
 
             // Act
-            List<Category> result = categoryUseCase.getCategories(order);
+            List<Category> result = categoryUseCase.getCategories(order,DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE);
 
             // Assert
             assertThat(result).hasSize(2);
             assertThat(result.get(0).getName()).isEqualTo("Banana");
             assertThat(result.get(1).getName()).isEqualTo("Apple");
 
-            verify(categoryPersistentPort, times(1)).getCategories(order);
+            verify(categoryPersistentPort, times(1)).getCategories(order,DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE);
         }
     }
 }

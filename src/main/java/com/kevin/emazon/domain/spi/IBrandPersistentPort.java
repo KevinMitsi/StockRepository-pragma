@@ -9,6 +9,6 @@ public interface IBrandPersistentPort {
     void saveBrand(Brand brand);
     boolean existByNameIgnoreCase(String name);
     Optional<Brand>findByName(String name);
-    List<Brand> getAll(String order);
+    List<Brand> getAll(String order, Integer pageNumber, Integer pageSize);
 
 }

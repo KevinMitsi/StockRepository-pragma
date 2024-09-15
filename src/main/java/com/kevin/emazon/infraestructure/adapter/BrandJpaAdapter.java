@@ -2,10 +2,12 @@ package com.kevin.emazon.infraestructure.adapter;
 
 import com.kevin.emazon.domain.model.Brand;
 import com.kevin.emazon.domain.spi.IBrandPersistentPort;
+import com.kevin.emazon.infraestructure.entity.BrandEntity;
 import com.kevin.emazon.infraestructure.mapper.IBrandEntityMapper;
 import com.kevin.emazon.infraestructure.repositories.BrandRepository;
 import com.kevin.emazon.infraestructure.util.PageableCreator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -33,8 +35,10 @@ public class BrandJpaAdapter implements IBrandPersistentPort {
 
 
     @Override
-    public List<Brand> getAll(String order) {
-        return brandRepository.findAll(PageableCreator.createPageable(order))
+    public List<Brand> getAll(String order, Integer pageNumber, Integer pageSize) {
+        Page<BrandEntity> brandEntities = brandRepository.findAll(PageableCreator.createPageable(order,pageNumber, pageSize));
+
+        return brandEntities
                 .map(brandEntityMapper::brandEntityToBrand)
                 .getContent();
     }

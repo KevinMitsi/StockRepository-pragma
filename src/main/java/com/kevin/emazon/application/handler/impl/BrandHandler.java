@@ -23,8 +23,9 @@ public class BrandHandler implements IBrandHandler {
     }
 
     @Override
-    public Page<BrandDto> getAll(String order) {
-        return ListToPageConversor.convertListIntoPage(convertList(brandServicePort.getAll(order)));
+    public Page<BrandDto> getAll(String order, Integer pageNumber, Integer pageSize) {
+        List<Brand> brands = brandServicePort.getAll(order, pageNumber, pageSize);
+        return ListToPageConversor.convertListIntoPage(convertList(brands),pageNumber,pageSize);
     }
 
     private List<BrandDto> convertList(List<Brand> all) {

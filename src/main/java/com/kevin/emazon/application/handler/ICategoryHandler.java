@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 
 public interface ICategoryHandler {
 
-    Page<CategoryDto> getAllCategories(String order);
+    Page<CategoryDto> getAllCategories(String order, Integer pageNumber, Integer pageSize);
     void saveCategory(CategoryDto category);
 
 }

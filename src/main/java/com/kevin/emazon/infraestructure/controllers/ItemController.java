@@ -14,13 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
+import static com.kevin.emazon.infraestructure.util.ConstantUtilInfraestructure.*;
+
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/item")
 public class ItemController {
     private static final String CREATED_ITEM_MESSAGE = "Item creado correctamente ";
-    public static final String ROLE_ADMINISTRATOR = "ROLE_ADMINISTRADOR";
-    public static final String ROLE_AUX_BODEGA = "ROLE_AUX_BODEGA";
 
     private final IItemHandler itemHandler;
 
@@ -32,17 +33,26 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.CREATED).body(CREATED_ITEM_MESSAGE + itemDto.getName());
     }
 
-    @GetMapping("/getAll/byBrand/{name}/{order}")
-    public ResponseEntity<Page<ItemResponseDto>> getAllByBrandName(@PathVariable String name, @PathVariable String order){
-        return ResponseEntity.status(HttpStatus.OK).body(itemHandler.getAllByBrandName(name, order));
+    @GetMapping("/getAll/byBrand/{name}")
+    public ResponseEntity<Page<ItemResponseDto>> getAllByBrandName(@PathVariable String name,
+                                                                   @RequestParam(defaultValue = DEFAULT_ORDERING) String order,
+                                                                   @RequestParam(defaultValue = DEFAULT_PAGE_NUMBER) Integer pageNumber,
+                                                                   @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) Integer pageSize){
+        return ResponseEntity.status(HttpStatus.OK).body(itemHandler.getAllByBrandName(name, order, pageNumber, pageSize));
     }
-    @GetMapping("/getAll/byCategory/{name}/{order}")
-    public ResponseEntity<Page<ItemResponseDto>> getAllByCategoryName(@PathVariable String name, @PathVariable String order){
-        return ResponseEntity.status(HttpStatus.OK).body(itemHandler.getAllByCategoryName(name, order));
+    @GetMapping("/getAll/byCategory/{name}")
+    public ResponseEntity<Page<ItemResponseDto>> getAllByCategoryName(@PathVariable String name,
+                                                                      @RequestParam(defaultValue = DEFAULT_ORDERING) String order,
+                                                                      @RequestParam(defaultValue = DEFAULT_PAGE_NUMBER) Integer pageNumber,
+                                                                      @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) Integer pageSize){
+        return ResponseEntity.status(HttpStatus.OK).body(itemHandler.getAllByCategoryName(name, order, pageNumber, pageSize));
     }
-    @GetMapping("/getAll/byName/{name}/{order}")
-    public ResponseEntity<Page<ItemResponseDto>> getAllByName(@PathVariable String name, @PathVariable String order){
-        return ResponseEntity.status(HttpStatus.OK).body(itemHandler.getAllByName(name, order));
+    @GetMapping("/getAll/byName/{name}")
+    public ResponseEntity<Page<ItemResponseDto>> getAllByName(@PathVariable String name,
+                                                              @RequestParam(defaultValue = DEFAULT_ORDERING) String order,
+                                                              @RequestParam(defaultValue = DEFAULT_PAGE_NUMBER) Integer pageNumber,
+                                                              @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) Integer pageSize){
+        return ResponseEntity.status(HttpStatus.OK).body(itemHandler.getAllByName(name, order, pageNumber, pageSize));
     }
 
 

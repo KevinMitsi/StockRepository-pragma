@@ -7,11 +7,8 @@ import org.springframework.data.domain.PageRequest;
 import java.util.List;
 public class ListToPageConversor {
 
-    public static final int PAGE_NUMBER = 0;
-    public static final int PAGE_SIZE = 10;
-
     private ListToPageConversor(){}
-    public static <D> Page<D> convertListIntoPage(List<D> domainModelList) {
-        return new PageImpl<>(domainModelList, PageRequest.of(PAGE_NUMBER, PAGE_SIZE), domainModelList.size());
+    public static <D> Page<D> convertListIntoPage(List<D> domainModelList, Integer pageNumber, Integer pageSize) {
+        return new PageImpl<>(domainModelList, PageRequest.of(pageNumber, pageSize), domainModelList.size());
     }
 }

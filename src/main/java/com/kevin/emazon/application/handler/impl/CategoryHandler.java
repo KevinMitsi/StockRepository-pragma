@@ -20,8 +20,8 @@ public class CategoryHandler implements ICategoryHandler {
     private final ICategoryDtoMapper categoryMapper;
 
     @Override
-    public Page<CategoryDto> getAllCategories(String order) {
-        return ListToPageConversor.convertListIntoPage(convertList(categoryServicePort.getCategories(order)));
+    public Page<CategoryDto> getAllCategories(String order, Integer pageNumber, Integer pageSize) {
+        return ListToPageConversor.convertListIntoPage(convertList(categoryServicePort.getCategories(order, pageNumber, pageSize)),pageNumber,pageSize);
     }
 
     @Override

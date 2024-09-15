@@ -8,12 +8,12 @@ import com.kevin.emazon.application.mapper.response.IItemResponseDtoMapper;
 import com.kevin.emazon.application.util.ListToPageConversor;
 import com.kevin.emazon.domain.model.Item;
 import com.kevin.emazon.domain.api.IItemServicePort;
-import com.kevin.emazon.infraestructure.exceptions.ItemException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
 @Service
@@ -28,17 +28,17 @@ public class ItemHandler implements IItemHandler {
     }
 
     @Override
-    public Page<ItemResponseDto> getAllByBrandName(String brandName, String order) {
-        return ListToPageConversor.convertListIntoPage(convertList(itemServicePort.getAllByBrandName(brandName, order)));
+    public Page<ItemResponseDto> getAllByBrandName(String brandName, String order, Integer pageNumber, Integer pageSize) {
+        return ListToPageConversor.convertListIntoPage(convertList(itemServicePort.getAllByBrandName(brandName, order, pageNumber, pageSize)),pageNumber,pageSize);
     }
     @Override
-    public Page<ItemResponseDto> getAllByCategoryName(String categoryName, String order) {
-        return ListToPageConversor.convertListIntoPage(convertList(itemServicePort.getAllByCategoryName(categoryName, order)));
+    public Page<ItemResponseDto> getAllByCategoryName(String categoryName, String order, Integer pageNumber, Integer pageSize) {
+        return ListToPageConversor.convertListIntoPage(convertList(itemServicePort.getAllByCategoryName(categoryName, order, pageNumber,pageSize)),pageNumber,pageSize);
     }
 
     @Override
-    public Page<ItemResponseDto> getAllByName(String itemName, String order) {
-        return ListToPageConversor.convertListIntoPage(convertList(itemServicePort.getAllByName(itemName, order)));
+    public Page<ItemResponseDto> getAllByName(String itemName,String order, Integer pageNumber, Integer pageSize) {
+        return ListToPageConversor.convertListIntoPage(convertList(itemServicePort.getAllByName(itemName, order, pageNumber, pageSize)),pageNumber, pageSize);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class ItemHandler implements IItemHandler {
                 .map(itemResponseDtoMapper::itemToItemResponseDto)
                 .toList();
         if (itemResponseDtoList.isEmpty()){
-            throw new ItemException("No hay items con esta categoría");
+            throw new NoSuchElementException("No hay items con esta categoría");
         }
         return itemResponseDtoList;
     }
