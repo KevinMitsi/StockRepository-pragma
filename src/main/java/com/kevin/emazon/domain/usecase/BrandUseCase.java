@@ -27,10 +27,10 @@ public class BrandUseCase implements IBrandServicePort {
 
 
     @Override
-    public List<Brand> getAll(String order) {
+    public List<Brand> getAll(String order, Integer pageNumber, Integer pageSize) {
 
         UtilClassDomain.validateOrderingMethod(order);
 
-        return persistentPort.getAll(order);
+        return persistentPort.getAll(order, pageNumber, pageSize);
     }
 }

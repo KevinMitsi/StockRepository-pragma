@@ -51,31 +51,30 @@ public class ItemUseCase implements IItemServicePort {
     }
 
     @Override
-    public List<Item> getAllByBrandName(String brandName, String order) {
-
+    public List<Item> getAllByBrandName(String brandName, String order, Integer pageNumber, Integer pageSize) {
         UtilClassDomain.validateOrderingMethod(order);
 
-        List<Item> itemsWithCategories = itemPersistentPort.getItemsByBrandName(brandName, order);
+        List<Item> itemsWithCategories = itemPersistentPort.getItemsByBrandName(brandName, order, pageNumber, pageSize);
         fillCategoriesInItems(itemsWithCategories);
 
         return itemsWithCategories;
     }
 
     @Override
-    public List<Item> getAllByCategoryName(String categoryName, String order) {
+    public List<Item> getAllByCategoryName(String categoryName, String order, Integer pageNumber, Integer pageSize) {
         UtilClassDomain.validateOrderingMethod(order);
 
-        List<Item> itemsWithCategories = itemPersistentPort.getItemsByCategoryName(categoryName, order);
+        List<Item> itemsWithCategories = itemPersistentPort.getItemsByCategoryName(categoryName, order, pageNumber, pageSize);
         fillCategoriesInItems(itemsWithCategories);
 
         return itemsWithCategories;
     }
 
     @Override
-    public List<Item> getAllByName(String itemName, String order) {
+    public List<Item> getAllByName(String itemName, String order, Integer pageNumber, Integer pageSize) {
         UtilClassDomain.validateOrderingMethod(order);
 
-        List<Item> itemsWithCategories=itemPersistentPort.getItemsByName(itemName, order);
+        List<Item> itemsWithCategories=itemPersistentPort.getItemsByName(itemName, order, pageNumber, pageSize);
         fillCategoriesInItems(itemsWithCategories);
 
         return itemsWithCategories;
@@ -168,4 +167,5 @@ public class ItemUseCase implements IItemServicePort {
     private void fillCategoriesInItems(List<Item> listItems) {
         listItems.forEach(item -> item.setCategories(itemCategoryPersistentPort.findCategoriesByItemId(item.getId())));
     }
+
 }

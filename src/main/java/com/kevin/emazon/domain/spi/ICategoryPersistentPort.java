@@ -7,7 +7,7 @@ import java.util.Optional;
 
 
 public interface ICategoryPersistentPort {
-    List<Category> getCategories(String order);
+    List<Category> getCategories(String order, Integer pageNumber, Integer pageSize);
 
     void saveCategory(Category category);
 

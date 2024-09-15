@@ -23,6 +23,8 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class BrandUseCaseTest {
+    public static final int DEFAULT_PAGE_SIZE = 10;
+    public static final int DEFAULT_PAGE_NUMBER = 1;
     @Mock
     private IBrandPersistentPort brandPersistentPort;
 
@@ -72,17 +74,17 @@ class BrandUseCaseTest {
             BrandEntity brandEntity2 = new BrandEntity();
             brandEntity2.setName("Banana");
 
-            when(brandPersistentPort.getAll("asc")).thenReturn(List.of(new Brand(null, "Apple", null), new Brand(null, "Banana", null)));
+            when(brandPersistentPort.getAll("asc", DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE)).thenReturn(List.of(new Brand(null, "Apple", null), new Brand(null, "Banana", null)));
 
             // Act
-            List<Brand> result = brandUseCase.getAll("asc");
+            List<Brand> result = brandUseCase.getAll("asc",DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE);
 
             // Assert
             assertThat(result).hasSize(2);
             assertThat(result.get(0).getName()).isEqualTo("Apple");
             assertThat(result.get(1).getName()).isEqualTo("Banana");
 
-            verify(brandPersistentPort, times(1)).getAll("asc");
+            verify(brandPersistentPort, times(1)).getAll("asc",DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE);
         }
 
         @Test
@@ -95,27 +97,27 @@ class BrandUseCaseTest {
 
 
 
-            when(brandPersistentPort.getAll("desc")).thenReturn(List.of(new Brand(null, "Banana", null), new Brand(null, "Apple", null)));
+            when(brandPersistentPort.getAll("desc", DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE)).thenReturn(List.of(new Brand(null, "Banana", null), new Brand(null, "Apple", null)));
 
             // Act
-            List<Brand> result = brandUseCase.getAll("desc");
+            List<Brand> result = brandUseCase.getAll("desc", DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE);
 
             // Assert
             assertThat(result).hasSize(2);
             assertThat(result.get(0).getName()).isEqualTo("Banana");
             assertThat(result.get(1).getName()).isEqualTo("Apple");
 
-            verify(brandPersistentPort, times(1)).getAll("desc");
+            verify(brandPersistentPort, times(1)).getAll("desc", DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE);
         }
 
         @Test
         void getBrands_ShouldThrowException_WhenOrderIsInvalid() {
             // Act & Assert
-            assertThatThrownBy(() -> brandUseCase.getAll("invalid"))
+            assertThatThrownBy(() -> brandUseCase.getAll("invalid", DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE))
                     .isInstanceOf(InvalidOrderingMethodException.class)
                     .hasMessage("Elija un ordenamiento valido: 'ASC' o 'DESC'");
 
-            verify(brandPersistentPort, never()).getAll(any());
+            verify(brandPersistentPort, never()).getAll(any(), eq(DEFAULT_PAGE_NUMBER), eq(DEFAULT_PAGE_SIZE));
         }
     }
 }

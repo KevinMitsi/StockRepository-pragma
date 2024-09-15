@@ -21,11 +21,11 @@ public class CategoryUseCase implements ICategoryServicePort {
 
 
     @Override
-    public List<Category> getCategories(String order) {
+    public List<Category> getCategories(String order, Integer pageNumber, Integer pageSize) {
 
         UtilClassDomain.validateOrderingMethod(order);
 
-        return categoryPersistentPort.getCategories(order);
+        return categoryPersistentPort.getCategories(order, pageNumber, pageSize);
     }
 
     @Override

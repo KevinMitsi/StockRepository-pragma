@@ -5,11 +5,10 @@ import com.kevin.emazon.domain.spi.IItemPersistentPort;
 import com.kevin.emazon.infraestructure.entity.ItemEntity;
 import com.kevin.emazon.infraestructure.mapper.IItemEntityMapper;
 import com.kevin.emazon.infraestructure.repositories.ItemRepository;
+import com.kevin.emazon.infraestructure.util.PageableCreator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,8 +16,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Component
 public class ItemJpaAdapter implements IItemPersistentPort {
-    private static final String SORT_BY = "name";
-    private static final String SORTING_KEY = "desc";
 
     private final ItemRepository itemRepository;
     private final IItemEntityMapper itemEntityMapper;
@@ -28,22 +25,22 @@ public class ItemJpaAdapter implements IItemPersistentPort {
     }
 
     @Override
-    public List<Item> getItemsByCategoryName(String categoryName, String order) {
-        Pageable pageable = createPageRequest(order);
+    public List<Item> getItemsByCategoryName(String categoryName, String order, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageableCreator.createPageable(order, pageNumber, pageSize);
         Page<ItemEntity> itemEntities = itemRepository.findAllByItemCategories_Category_NameIgnoreCase(categoryName, pageable);
         return itemEntities.map(itemEntityMapper::toItem).getContent();
     }
 
     @Override
-    public List<Item> getItemsByBrandName(String brandName, String order) {
-        Pageable pageable = createPageRequest(order);
+    public List<Item> getItemsByBrandName(String brandName, String order, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageableCreator.createPageable(order, pageNumber, pageSize);
         Page<ItemEntity> itemEntities = itemRepository.findAllByBrand_NameIgnoreCase(brandName, pageable);
         return itemEntities.map(itemEntityMapper::toItem).getContent();
     }
 
     @Override
-    public List<Item> getItemsByName(String itemName, String order) {
-        Pageable pageable = createPageRequest(order);
+    public List<Item> getItemsByName(String itemName, String order, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageableCreator.createPageable(order, pageNumber, pageSize);
         Page<ItemEntity> itemEntities = itemRepository.findAllByNameContainingIgnoreCase(itemName, pageable);
         return itemEntities.map(itemEntityMapper::toItem).getContent();
     }
@@ -69,18 +66,4 @@ public class ItemJpaAdapter implements IItemPersistentPort {
         return itemRepository.findByIdIn(itemsIds).stream().map(itemEntityMapper::toItem).toList();
     }
 
-
-
-
-
-
-
-
-    private Pageable createPageRequest(String order) {
-        Sort sort = Sort.by(SORT_BY).ascending();
-        if (SORTING_KEY.equalsIgnoreCase(order)) {
-            sort = sort.descending();
-        }
-        return PageRequest.of(0, 10, sort);
-    }
 }

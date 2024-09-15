@@ -10,9 +10,9 @@ import java.util.List;
 public interface IItemHandler {
     void saveItem(ItemDto itemDto);
 
-    Page<ItemResponseDto> getAllByBrandName(String brandName, String order);
-    Page<ItemResponseDto> getAllByCategoryName(String categoryName, String order);
-    Page<ItemResponseDto> getAllByName(String itemName, String order);
+    Page<ItemResponseDto> getAllByBrandName(String brandName, String order, Integer pageNumber, Integer pageSize);
+    Page<ItemResponseDto> getAllByCategoryName(String categoryName, String order, Integer pageNumber, Integer pageSize);
+    Page<ItemResponseDto> getAllByName(String itemName, String order, Integer pageNumber, Integer pageSize);
 
     void updateStockItem(Long itemId, Long amount);
 

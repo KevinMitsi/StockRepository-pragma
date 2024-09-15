@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface IBrandServicePort {
     void saveBrand(Brand brand);
-    List<Brand> getAll(String order);
+    List<Brand> getAll(String order, Integer pageNumber, Integer pageSize);
 
 }
