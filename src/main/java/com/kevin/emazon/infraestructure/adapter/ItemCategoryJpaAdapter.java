@@ -8,6 +8,7 @@ import com.kevin.emazon.infraestructure.mapper.IItemCategoryEntityMapper;
 import com.kevin.emazon.infraestructure.repositories.ItemCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class ItemCategoryJpaAdapter implements IItemCategoryPersistentPort {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Category> findCategoriesByItemId(Long itemId) {
         return itemCategoryRepository.findCategoriesByItemId(itemId).stream().map(categoryEntityMapper::toCategory).toList();
     }
