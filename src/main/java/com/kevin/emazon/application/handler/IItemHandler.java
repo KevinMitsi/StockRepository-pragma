@@ -2,6 +2,7 @@ package com.kevin.emazon.application.handler;
 
 import com.kevin.emazon.application.dto.ItemDto;
 import com.kevin.emazon.application.dto.response.ItemResponseDto;
+import com.kevin.emazon.application.dto.response.ItemCartResponse;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface IItemHandler {
     boolean existById(Long id);
     boolean isEnoughInStock(Long itemId, Long quantity);
     boolean validateCategoryLimit(List<Long> itemsIds);
+    List<ItemCartResponse> geItemsInUserCart(List<Long> itemIds, Long categoryToOrder, Long brandToOrder);
+
 }

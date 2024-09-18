@@ -16,6 +16,7 @@ import org.mockito.Mockito;
 import java.util.List;
 import java.util.Optional;
 
+import static com.kevin.emazon.domain.usecase.ItemUseCase.EMPTY_ID_LIST_MESSAGE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -152,4 +153,95 @@ class ItemUseCaseTest {
         assertThrows(ItemException.class, () -> itemUseCase.updateStockItem(itemId, newStock));
         verify(itemPersistentPort, never()).updateItemStock(anyLong(), anyLong());
     }
+
+    @Test
+    void geItemsInUserCart_ShouldThrowIllegalArgumentException_WhenItemIdsIsEmpty() {
+        // Arrange
+        List<Long> emptyItemIds = List.of();
+
+        // Act & Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+                itemUseCase.geItemsInUserCart(emptyItemIds, null, null));
+        assertEquals(EMPTY_ID_LIST_MESSAGE, exception.getMessage());
+    }
+
+    @Test
+    void geItemsInUserCart_ShouldReturnItems_WhenCategoryAndBrandAreNull() {
+        // Arrange
+        List<Long> itemIds = List.of(1L, 2L, 3L);
+        List<Item> expectedItems = List.of(new Item(), new Item(), new Item());
+
+        when(itemPersistentPort.getItemsByIds(itemIds)).thenReturn(expectedItems);
+
+        // Act
+        List<Item> result = itemUseCase.geItemsInUserCart(itemIds, null, null);
+
+        // Assert
+        assertEquals(expectedItems.size(), result.size());
+        verify(itemPersistentPort, times(1)).getItemsByIds(itemIds);
+    }
+
+    @Test
+    void geItemsInUserCart_ShouldReturnItems_WhenCategoryIsNotNullAndBrandIsNull() {
+        // Arrange
+        List<Long> itemIds = List.of(1L, 2L, 3L);
+        Long categoryToOrder = 10L;
+        List<Item> expectedItems = List.of(new Item(), new Item());
+
+        when(itemPersistentPort.findByCategoryIdAndItemIds(categoryToOrder, itemIds)).thenReturn(expectedItems);
+
+        // Act
+        List<Item> result = itemUseCase.geItemsInUserCart(itemIds, categoryToOrder, null);
+
+        // Assert
+        assertEquals(expectedItems.size(), result.size());
+        verify(itemPersistentPort, times(1)).findByCategoryIdAndItemIds(categoryToOrder, itemIds);
+    }
+
+    @Test
+    void geItemsInUserCart_ShouldReturnItems_WhenCategoryIsNullAndBrandIsNotNull() {
+        // Arrange
+        List<Long> itemIds = List.of(1L, 2L, 3L);
+        Long brandToOrder = 20L;
+        List<Item> expectedItems = List.of(new Item(), new Item(), new Item());
+
+        when(itemPersistentPort.findByBrandIdAndItemIds(brandToOrder, itemIds)).thenReturn(expectedItems);
+
+        // Act
+        List<Item> result = itemUseCase.geItemsInUserCart(itemIds, null, brandToOrder);
+
+        // Assert
+        assertEquals(expectedItems.size(), result.size());
+        verify(itemPersistentPort, times(1)).findByBrandIdAndItemIds(brandToOrder, itemIds);
+    }
+
+    @Test
+    void geItemsInUserCart_ShouldReturnItems_WhenCategoryAndBrandAreNotNull() {
+        // Arrange
+        List<Long> itemIds = List.of(1L, 2L, 3L);
+        Long categoryToOrder = 10L;
+        Long brandToOrder = 20L;
+        List<Item> expectedItems = List.of(new Item());
+
+        when(itemPersistentPort.findByIdAndBrandIdAndItemIds(categoryToOrder, brandToOrder, itemIds))
+                .thenReturn(expectedItems);
+
+        // Act
+        List<Item> result = itemUseCase.geItemsInUserCart(itemIds, categoryToOrder, brandToOrder);
+
+        // Assert
+        assertEquals(expectedItems.size(), result.size());
+        verify(itemPersistentPort, times(1))
+                .findByIdAndBrandIdAndItemIds(categoryToOrder, brandToOrder, itemIds);
+    }
+
+    @Test
+    void geItemsInUserCart_ShouldThrowIllegalArgumentException_WhenItemIdsIsNull() {
+        // Act & Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+                itemUseCase.geItemsInUserCart(null, null, null));
+        assertEquals(EMPTY_ID_LIST_MESSAGE, exception.getMessage());
+    }
+
+
 }

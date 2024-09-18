@@ -1,10 +1,7 @@
 package com.kevin.emazon.domain.usecase;
 
 import com.kevin.emazon.domain.api.IItemServicePort;
-import com.kevin.emazon.domain.model.Brand;
-import com.kevin.emazon.domain.model.Category;
-import com.kevin.emazon.domain.model.Item;
-import com.kevin.emazon.domain.model.ItemCategory;
+import com.kevin.emazon.domain.model.*;
 import com.kevin.emazon.domain.spi.IBrandPersistentPort;
 import com.kevin.emazon.domain.spi.ICategoryPersistentPort;
 import com.kevin.emazon.domain.spi.IItemCategoryPersistentPort;
@@ -30,6 +27,7 @@ public class ItemUseCase implements IItemServicePort {
     public static final String REPEATED_CATEGORIES_MESSAGE = "Hay categorías repetidas";
     public static final String CATEGORY_DOESNT_EXIST_MESSAGE = "La categoría que intenta agregar a este item no existe: ";
     public static final String ITEM_NOT_FOUND_EXCEPTION_MESSAGE = "El item con este id no existe";
+    public static final String EMPTY_ID_LIST_MESSAGE = "La lista de itemIds no puede estar vacía.";
     private final IItemPersistentPort itemPersistentPort;
     private final ICategoryPersistentPort categoryPersistentPort;
     private final IBrandPersistentPort brandPersistentPort;
@@ -104,6 +102,7 @@ public class ItemUseCase implements IItemServicePort {
         return itemPersistentPort.isEnoughInStock(itemId, quantity);
     }
 
+    @Override
     public boolean areCategoriesValid(List<Long> itemsIds) {
         List<Item> items = itemPersistentPort.getItemsByIds(itemsIds);
         fillCategoriesInItems(items);
@@ -115,40 +114,47 @@ public class ItemUseCase implements IItemServicePort {
         return categoryCount.values().stream().noneMatch(count -> count > 3);
     }
 
-
-
-
+    @Override
+    public List<Item> geItemsInUserCart(List<Long> itemIds, Long categoryToOrder, Long brandToOrder) {
+        validateIfListIsEmpty(itemIds);
+        return chooseMethodDependingOnParams(itemIds, categoryToOrder, brandToOrder);
+    }
 
     //Internal Class Methods
 
-
-
-
-
-
-
-
+    private List<Item> chooseMethodDependingOnParams(List<Long> itemIds, Long categoryToOrder, Long brandToOrder) {
+        if (categoryToOrder != null && brandToOrder != null) {
+            return itemPersistentPort.findByIdAndBrandIdAndItemIds(categoryToOrder, brandToOrder, itemIds);
+        } else if (categoryToOrder != null) {
+            return itemPersistentPort.findByCategoryIdAndItemIds(categoryToOrder, itemIds);
+        } else if (brandToOrder != null) {
+            return itemPersistentPort.findByBrandIdAndItemIds(brandToOrder, itemIds);
+        } else {
+            return itemPersistentPort.getItemsByIds(itemIds);
+        }
+    }
     private void saveItemCategory(Item item, List<Category> categories) {
 
         List<ItemCategory>list=categories.stream().map(category -> new ItemCategory(null, item, category)).toList();
         list.forEach(itemCategoryPersistentPort::saveItemCategory);
     }
-
+    private static void validateIfListIsEmpty(List<Long> itemIds) {
+        if (itemIds == null || itemIds.isEmpty()) {
+            throw new IllegalArgumentException(EMPTY_ID_LIST_MESSAGE);
+        }
+    }
     private Item validateAndPrepareItem(Item item) {
         item.setBrand(findBrand(item.getBrand().getName()));
         item.setCategories(findCategories(item.getCategories()));
         validateList(item.getCategories());
         return item;
     }
-
-
     private List<Category> findCategories(List<Category> categories){
         return categories.stream().map(category -> categoryPersistentPort
                 .findByName(category.getName())
                 .orElseThrow(() -> new CategoryException(CATEGORY_DOESNT_EXIST_MESSAGE +category.getName())))
                 .toList();
     }
-
     private Brand findBrand(String name) {
         return brandPersistentPort
                 .findByName(name)
@@ -163,7 +169,6 @@ public class ItemUseCase implements IItemServicePort {
             throw new ItemException(REPEATED_CATEGORIES_MESSAGE);
         }
     }
-
     private void fillCategoriesInItems(List<Item> listItems) {
         listItems.forEach(item -> item.setCategories(itemCategoryPersistentPort.findCategoriesByItemId(item.getId())));
     }

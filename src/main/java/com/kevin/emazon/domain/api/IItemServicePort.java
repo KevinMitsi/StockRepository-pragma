@@ -14,4 +14,6 @@ public interface IItemServicePort {
     boolean existById(Long id);
     boolean isEnoughInStock(Long itemId, Long quantity);
     boolean areCategoriesValid(List<Long> itemsIds);
+
+    List<Item> geItemsInUserCart(List<Long> itemIds, Long categoryToOrder, Long brandToOrder);
 }
