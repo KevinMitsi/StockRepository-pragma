@@ -5,9 +5,11 @@ import com.kevin.emazon.application.dto.response.ItemResponseDto;
 import com.kevin.emazon.application.handler.IItemHandler;
 import com.kevin.emazon.application.mapper.IItemDtoMapper;
 import com.kevin.emazon.application.mapper.response.IItemResponseDtoMapper;
+import com.kevin.emazon.application.util.ItemCartMapper;
 import com.kevin.emazon.application.util.ListToPageConversor;
 import com.kevin.emazon.domain.model.Item;
 import com.kevin.emazon.domain.api.IItemServicePort;
+import com.kevin.emazon.application.dto.response.ItemCartResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 @Service
 public class ItemHandler implements IItemHandler {
+    public static final String NO_ITEMS_FOUND_MESSAGE = "No hay items con esta categoría";
     private final IItemServicePort itemServicePort;
     private final IItemDtoMapper itemDtoMapper;
     private final IItemResponseDtoMapper itemResponseDtoMapper;
@@ -60,12 +63,20 @@ public class ItemHandler implements IItemHandler {
         return itemServicePort.areCategoriesValid(itemsIds);
     }
 
+    @Override
+    public List<ItemCartResponse> geItemsInUserCart(List<Long> itemIds, Long categoryToOrder, Long brandToOrder) {
+        return itemServicePort.geItemsInUserCart(itemIds,categoryToOrder,brandToOrder)
+                .stream()
+                .map(ItemCartMapper::toItemCartResponse)
+                .toList();
+    }
+
     private List<ItemResponseDto> convertList(List<Item> items) {
         List<ItemResponseDto>itemResponseDtoList = items.stream()
                 .map(itemResponseDtoMapper::itemToItemResponseDto)
                 .toList();
         if (itemResponseDtoList.isEmpty()){
-            throw new NoSuchElementException("No hay items con esta categoría");
+            throw new NoSuchElementException(NO_ITEMS_FOUND_MESSAGE);
         }
         return itemResponseDtoList;
     }

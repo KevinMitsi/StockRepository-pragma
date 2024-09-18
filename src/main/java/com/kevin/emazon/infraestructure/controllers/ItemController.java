@@ -1,14 +1,18 @@
 package com.kevin.emazon.infraestructure.controllers;
 
+import com.kevin.emazon.application.dto.ItemCartRequest;
 import com.kevin.emazon.application.dto.ItemDto;
 import com.kevin.emazon.application.dto.response.ItemResponseDto;
 import com.kevin.emazon.application.handler.IItemHandler;
+import com.kevin.emazon.application.dto.response.ItemCartResponse;
 import com.kevin.emazon.domain.model.UpdateItemQuantityRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +23,7 @@ import static com.kevin.emazon.infraestructure.util.ConstantUtilInfraestructure.
 
 @RequiredArgsConstructor
 @RestController
+@Validated
 @RequestMapping("api/v1/item")
 public class ItemController {
     private static final String CREATED_ITEM_MESSAGE = "Item creado correctamente ";
@@ -55,6 +60,13 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.OK).body(itemHandler.getAllByName(name, order, pageNumber, pageSize));
     }
 
+
+    //For external microservices
+    @PostMapping("/itemCarts")
+    @ResponseStatus(value = HttpStatus.OK)
+    public List<ItemCartResponse> getItemsInUserCart(@Valid @RequestBody ItemCartRequest itemCartRequest){
+        return itemHandler.geItemsInUserCart(itemCartRequest.getItemIds(), itemCartRequest.getCategoryToOrder(), itemCartRequest.getBrandToOrder());
+    }
 
     @GetMapping("/exist/{id}")
     @ResponseStatus(code = HttpStatus.OK)
