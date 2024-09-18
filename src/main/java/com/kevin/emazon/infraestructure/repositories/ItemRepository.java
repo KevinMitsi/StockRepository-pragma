@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,5 +22,14 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
     Long findStockQuantityByItemId(Long itemId);
 
     List<ItemEntity> findByIdIn(List<Long> itemIds);
+
+    @Query("SELECT i FROM ItemEntity i JOIN i.itemCategories c WHERE c.category.id = :categoryId AND i.id IN :itemIds")
+    List<ItemEntity> findByCategoryIdAndItemIds(@Param("categoryId") Long categoryId, @Param("itemIds") List<Long> itemIds);
+
+    @Query("SELECT i FROM ItemEntity i WHERE i.brand.id = :brandId AND i.id IN :itemIds")
+    List<ItemEntity> findByBrandIdAndItemIds(@Param("brandId") Long brandId, @Param("itemIds") List<Long> itemIds);
+
+    @Query("SELECT i FROM ItemEntity i JOIN i.itemCategories c WHERE c.category.id = :categoryId AND i.brand.id = :brandId AND i.id IN :itemIds")
+    List<ItemEntity> findByCategoryIdAndBrandIdAndItemIds(@Param("categoryId") Long categoryId, @Param("brandId") Long brandId, @Param("itemIds") List<Long> itemIds);
 
 }

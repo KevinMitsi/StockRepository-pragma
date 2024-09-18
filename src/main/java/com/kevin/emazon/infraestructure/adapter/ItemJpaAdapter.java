@@ -75,4 +75,31 @@ public class ItemJpaAdapter implements IItemPersistentPort {
         return itemRepository.findByIdIn(itemsIds).stream().map(itemEntityMapper::toItem).toList();
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<Item> findByCategoryIdAndItemIds(Long category, List<Long> itemIds) {
+        return itemRepository.findByCategoryIdAndItemIds(category, itemIds)
+                .stream()
+                .map(itemEntityMapper::toItem)
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Item> findByBrandIdAndItemIds(Long brand, List<Long> itemIds) {
+        return itemRepository.findByBrandIdAndItemIds(brand, itemIds)
+                .stream()
+                .map(itemEntityMapper::toItem)
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Item> findByIdAndBrandIdAndItemIds(Long category, Long brand, List<Long> itemIds) {
+        return itemRepository.findByCategoryIdAndBrandIdAndItemIds(category, brand, itemIds)
+                .stream()
+                .map(itemEntityMapper::toItem)
+                .toList();
+    }
+
 }
