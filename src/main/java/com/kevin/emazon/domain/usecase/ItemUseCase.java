@@ -28,6 +28,8 @@ public class ItemUseCase implements IItemServicePort {
     public static final String CATEGORY_DOESNT_EXIST_MESSAGE = "La categoría que intenta agregar a este item no existe: ";
     public static final String ITEM_NOT_FOUND_EXCEPTION_MESSAGE = "El item con este id no existe";
     public static final String EMPTY_ID_LIST_MESSAGE = "La lista de itemIds no puede estar vacía.";
+    public static final int MAX_NUMBER_CATEGORIES = 3;
+    public static final int ZERO_INT_CONSTANT = 0;
     private final IItemPersistentPort itemPersistentPort;
     private final ICategoryPersistentPort categoryPersistentPort;
     private final IBrandPersistentPort brandPersistentPort;
@@ -83,7 +85,7 @@ public class ItemUseCase implements IItemServicePort {
         if (!existById(itemId)){
             throw new ItemException(ITEM_NOTFOUND_EXCEPTION_MESSAGE);
         }
-        if (amount == null || amount<=0){
+        if (amount == null || amount<= ZERO_INT_CONSTANT){
             throw new IncreaseItemStockException(INCREASE_ITEM_STOCK_EXCEPTION_MESSAGE);
         }
         itemPersistentPort.updateItemStock(itemId, amount);
@@ -111,7 +113,7 @@ public class ItemUseCase implements IItemServicePort {
                 .flatMap(item -> item.getCategories().stream())
                 .collect(Collectors.groupingBy(Category::getName, Collectors.counting()));
 
-        return categoryCount.values().stream().noneMatch(count -> count > 3);
+        return categoryCount.values().stream().noneMatch(count -> count > MAX_NUMBER_CATEGORIES);
     }
 
     @Override
@@ -125,13 +127,14 @@ public class ItemUseCase implements IItemServicePort {
     private List<Item> chooseMethodDependingOnParams(List<Long> itemIds, Long categoryToOrder, Long brandToOrder) {
         if (categoryToOrder != null && brandToOrder != null) {
             return itemPersistentPort.findByIdAndBrandIdAndItemIds(categoryToOrder, brandToOrder, itemIds);
-        } else if (categoryToOrder != null) {
-            return itemPersistentPort.findByCategoryIdAndItemIds(categoryToOrder, itemIds);
-        } else if (brandToOrder != null) {
-            return itemPersistentPort.findByBrandIdAndItemIds(brandToOrder, itemIds);
-        } else {
-            return itemPersistentPort.getItemsByIds(itemIds);
         }
+        if (categoryToOrder != null) {
+            return itemPersistentPort.findByCategoryIdAndItemIds(categoryToOrder, itemIds);
+        }
+        if (brandToOrder != null) {
+            return itemPersistentPort.findByBrandIdAndItemIds(brandToOrder, itemIds);
+        }
+        return itemPersistentPort.getItemsByIds(itemIds);
     }
     private void saveItemCategory(Item item, List<Category> categories) {
 
@@ -162,7 +165,7 @@ public class ItemUseCase implements IItemServicePort {
     }
     private void validateList(List<Category> categories) {
         Set<Category> noRepeatedCategory = new HashSet<>(categories);
-        if (categories.isEmpty() || categories.size()>3){
+        if (categories.isEmpty() || categories.size()>MAX_NUMBER_CATEGORIES){
             throw new ItemException(WRONG_CATEGORY_LIST_CREATION_MESSAGE);
         }
         if (noRepeatedCategory.size()<categories.size()){
