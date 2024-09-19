@@ -90,8 +90,4 @@ public class ItemController {
         return itemHandler.validateCategoryLimit(itemIds);
     }
 
-
-
-
-
 }
