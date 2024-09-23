@@ -64,6 +64,11 @@ public class ItemHandler implements IItemHandler {
     }
 
     @Override
+    public Double getPriceByItemId(Long itemId) {
+        return itemServicePort.getPriceByItemId(itemId);
+    }
+
+    @Override
     public List<ItemCartResponse> geItemsInUserCart(List<Long> itemIds, Long categoryToOrder, Long brandToOrder) {
         return itemServicePort.geItemsInUserCart(itemIds,categoryToOrder,brandToOrder)
                 .stream()

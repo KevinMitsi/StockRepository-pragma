@@ -1,7 +1,10 @@
 package com.kevin.emazon.domain.usecase;
 
 import com.kevin.emazon.domain.api.IItemServicePort;
-import com.kevin.emazon.domain.model.*;
+import com.kevin.emazon.domain.model.Brand;
+import com.kevin.emazon.domain.model.Category;
+import com.kevin.emazon.domain.model.Item;
+import com.kevin.emazon.domain.model.ItemCategory;
 import com.kevin.emazon.domain.spi.IBrandPersistentPort;
 import com.kevin.emazon.domain.spi.ICategoryPersistentPort;
 import com.kevin.emazon.domain.spi.IItemCategoryPersistentPort;
@@ -17,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 
 public class ItemUseCase implements IItemServicePort {
     public static final String ITEM_NOTFOUND_EXCEPTION_MESSAGE = "ItemNotfoundException";
@@ -117,6 +119,14 @@ public class ItemUseCase implements IItemServicePort {
     }
 
     @Override
+    public Double getPriceByItemId(Long itemId) {
+        if (!existById(itemId)){
+            throw new ItemException(ITEM_NOTFOUND_EXCEPTION_MESSAGE);
+        }
+        return itemPersistentPort.getPriceByItemId(itemId);
+    }
+
+    @Override
     public List<Item> geItemsInUserCart(List<Long> itemIds, Long categoryToOrder, Long brandToOrder) {
         validateIfListIsEmpty(itemIds);
         return chooseMethodDependingOnParams(itemIds, categoryToOrder, brandToOrder);
@@ -154,8 +164,8 @@ public class ItemUseCase implements IItemServicePort {
     }
     private List<Category> findCategories(List<Category> categories){
         return categories.stream().map(category -> categoryPersistentPort
-                .findByName(category.getName())
-                .orElseThrow(() -> new CategoryException(CATEGORY_DOESNT_EXIST_MESSAGE +category.getName())))
+                        .findByName(category.getName())
+                        .orElseThrow(() -> new CategoryException(CATEGORY_DOESNT_EXIST_MESSAGE +category.getName())))
                 .toList();
     }
     private Brand findBrand(String name) {

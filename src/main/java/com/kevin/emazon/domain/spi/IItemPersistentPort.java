@@ -14,9 +14,9 @@ public interface IItemPersistentPort {
     boolean existById(Long id);
     boolean isEnoughInStock(Long itemId, Long quantity);
     List<Item> getItemsByIds(List<Long> itemsIds);
-
     List<Item> findByCategoryIdAndItemIds(Long category, List<Long> itemIds);
     List<Item> findByBrandIdAndItemIds(Long brand, List<Long> itemIds);
     List<Item> findByIdAndBrandIdAndItemIds(Long category, Long band, List<Long> itemIds);
+    Double getPriceByItemId(Long itemId);
 
 }

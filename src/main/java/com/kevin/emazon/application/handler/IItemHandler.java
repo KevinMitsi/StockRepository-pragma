@@ -20,6 +20,8 @@ public interface IItemHandler {
     boolean existById(Long id);
     boolean isEnoughInStock(Long itemId, Long quantity);
     boolean validateCategoryLimit(List<Long> itemsIds);
+
+    Double getPriceByItemId(Long itemId);
     List<ItemCartResponse> geItemsInUserCart(List<Long> itemIds, Long categoryToOrder, Long brandToOrder);
 
 }

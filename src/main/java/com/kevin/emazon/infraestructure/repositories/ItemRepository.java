@@ -32,4 +32,7 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
     @Query("SELECT i FROM ItemEntity i JOIN i.itemCategories c WHERE c.category.id = :categoryId AND i.brand.id = :brandId AND i.id IN :itemIds")
     List<ItemEntity> findByCategoryIdAndBrandIdAndItemIds(@Param("categoryId") Long categoryId, @Param("brandId") Long brandId, @Param("itemIds") List<Long> itemIds);
 
+    @Query("SELECT i.price FROM ItemEntity i WHERE i.id = :itemId")
+    Double findPriceById(@Param("itemId") Long itemId);
+
 }
