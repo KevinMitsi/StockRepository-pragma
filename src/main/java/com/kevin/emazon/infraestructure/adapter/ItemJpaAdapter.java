@@ -102,4 +102,9 @@ public class ItemJpaAdapter implements IItemPersistentPort {
                 .toList();
     }
 
+    @Override
+    public Double getPriceByItemId(Long itemId) {
+        return itemRepository.findPriceById(itemId);
+    }
+
 }

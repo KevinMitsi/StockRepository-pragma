@@ -90,4 +90,9 @@ public class ItemController {
         return itemHandler.validateCategoryLimit(itemIds);
     }
 
+    @GetMapping("/price/{itemId}")
+    public Double getItemPriceByItemId(@PathVariable Long itemId){
+        return itemHandler.getPriceByItemId(itemId);
+    }
+
 }
