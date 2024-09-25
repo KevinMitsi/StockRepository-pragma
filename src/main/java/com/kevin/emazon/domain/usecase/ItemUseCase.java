@@ -32,6 +32,8 @@ public class ItemUseCase implements IItemServicePort {
     public static final String EMPTY_ID_LIST_MESSAGE = "La lista de itemIds no puede estar vacía.";
     public static final int MAX_NUMBER_CATEGORIES = 3;
     public static final int ZERO_INT_CONSTANT = 0;
+    public static final String REDUCE_STOCK_ITEM_EXCEPTION = "NO SE ENCONTRO EL ITEM";
+    public static final String NO_HAY_SUFICIENTES_ITEMS_PARA_COMPRAR = "NO HAY SUFICIENTES ITEMS PARA COMPRAR";
     private final IItemPersistentPort itemPersistentPort;
     private final ICategoryPersistentPort categoryPersistentPort;
     private final IBrandPersistentPort brandPersistentPort;
@@ -130,6 +132,17 @@ public class ItemUseCase implements IItemServicePort {
     public List<Item> geItemsInUserCart(List<Long> itemIds, Long categoryToOrder, Long brandToOrder) {
         validateIfListIsEmpty(itemIds);
         return chooseMethodDependingOnParams(itemIds, categoryToOrder, brandToOrder);
+    }
+
+    @Override
+    public void reduceStock(Long itemId, Long quantity) {
+        if(!itemPersistentPort.existById(itemId)){
+            throw new ItemException(REDUCE_STOCK_ITEM_EXCEPTION);
+        }
+        if (!itemPersistentPort.isEnoughInStock(itemId, quantity)){
+            throw new ItemException(NO_HAY_SUFICIENTES_ITEMS_PARA_COMPRAR);
+        }
+        itemPersistentPort.reduceStock(itemId,quantity);
     }
 
     //Internal Class Methods

@@ -76,6 +76,11 @@ public class ItemHandler implements IItemHandler {
                 .toList();
     }
 
+    @Override
+    public void reduceStock(Long itemId, Long quantity) {
+        itemServicePort.reduceStock(itemId, quantity);
+    }
+
     private List<ItemResponseDto> convertList(List<Item> items) {
         List<ItemResponseDto>itemResponseDtoList = items.stream()
                 .map(itemResponseDtoMapper::itemToItemResponseDto)

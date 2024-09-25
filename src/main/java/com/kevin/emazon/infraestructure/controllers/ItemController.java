@@ -95,4 +95,9 @@ public class ItemController {
         return itemHandler.getPriceByItemId(itemId);
     }
 
+    @PutMapping("reduceQuantity/{itemID}/{quantity}")
+    @ResponseStatus(HttpStatus.OK)
+    public void reduceQuantityInStock(@PathVariable Long itemID, @PathVariable Long quantity){
+        itemHandler.reduceStock(itemID, quantity);
+    }
 }

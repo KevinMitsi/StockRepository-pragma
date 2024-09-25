@@ -16,7 +16,7 @@ import org.mockito.Mockito;
 import java.util.List;
 import java.util.Optional;
 
-import static com.kevin.emazon.domain.usecase.ItemUseCase.EMPTY_ID_LIST_MESSAGE;
+import static com.kevin.emazon.domain.usecase.ItemUseCase.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -243,5 +243,60 @@ class ItemUseCaseTest {
         assertEquals(EMPTY_ID_LIST_MESSAGE, exception.getMessage());
     }
 
+
+    @Test
+    void reduceStock_ShouldReduceStock_WhenConditionsAreMet() {
+        // Arrange
+        Long existingItemId = 1L;
+        Long quantity = 5L;
+
+        when(itemPersistentPort.existById(existingItemId)).thenReturn(true);
+        when(itemPersistentPort.isEnoughInStock(existingItemId, quantity)).thenReturn(true);
+
+        // Act
+        itemUseCase.reduceStock(existingItemId, quantity);
+
+        // Assert
+        verify(itemPersistentPort, times(1)).existById(existingItemId);
+        verify(itemPersistentPort, times(1)).isEnoughInStock(existingItemId, quantity);
+        verify(itemPersistentPort, times(1)).reduceStock(existingItemId, quantity);
+    }
+
+
+    @Test
+    void reduceStock_ShouldThrowException_WhenNotEnoughStock() {
+        // Arrange
+        Long existingItemId = 1L;
+        Long quantity = 10L;
+
+        when(itemPersistentPort.existById(existingItemId)).thenReturn(true);
+        when(itemPersistentPort.isEnoughInStock(existingItemId, quantity)).thenReturn(false);
+
+        // Act & Assert
+        ItemException exception = assertThrows(ItemException.class,
+                () -> itemUseCase.reduceStock(existingItemId, quantity));
+
+        assertEquals(NO_HAY_SUFICIENTES_ITEMS_PARA_COMPRAR, exception.getMessage());
+        verify(itemPersistentPort, times(1)).existById(existingItemId);
+        verify(itemPersistentPort, times(1)).isEnoughInStock(existingItemId, quantity);
+        verify(itemPersistentPort, never()).reduceStock(anyLong(), anyLong());
+    }
+
+    @Test
+    void reduceStock_ShouldThrowException_WhenItemDoesNotExist() {
+        // Arrange
+        Long nonExistingItemId = 1L;
+        Long quantity = 1L;
+
+        when(itemPersistentPort.existById(nonExistingItemId)).thenReturn(false);
+
+        // Act & Assert
+        ItemException exception = assertThrows(ItemException.class,
+                () -> itemUseCase.reduceStock(nonExistingItemId, quantity));
+
+        assertEquals(REDUCE_STOCK_ITEM_EXCEPTION, exception.getMessage());
+        verify(itemPersistentPort, never()).isEnoughInStock(anyLong(), anyLong());
+        verify(itemPersistentPort, never()).reduceStock(anyLong(), anyLong());
+    }
 
 }
