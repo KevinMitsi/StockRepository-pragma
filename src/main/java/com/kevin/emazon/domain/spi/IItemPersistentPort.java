@@ -18,5 +18,6 @@ public interface IItemPersistentPort {
     List<Item> findByBrandIdAndItemIds(Long brand, List<Long> itemIds);
     List<Item> findByIdAndBrandIdAndItemIds(Long category, Long band, List<Long> itemIds);
     Double getPriceByItemId(Long itemId);
+    void reduceStock(Long itemId, Long quantity);
 
 }

@@ -23,5 +23,5 @@ public interface IItemHandler {
 
     Double getPriceByItemId(Long itemId);
     List<ItemCartResponse> geItemsInUserCart(List<Long> itemIds, Long categoryToOrder, Long brandToOrder);
-
+    void reduceStock(Long itemId, Long quantity);
 }

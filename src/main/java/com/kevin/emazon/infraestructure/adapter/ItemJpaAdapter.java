@@ -107,4 +107,11 @@ public class ItemJpaAdapter implements IItemPersistentPort {
         return itemRepository.findPriceById(itemId);
     }
 
+    @Override
+    public void reduceStock(Long itemId, Long quantity) {
+        ItemEntity itemEntity = itemRepository.findById(itemId).orElseThrow();
+        itemEntity.setStockQuantity(itemEntity.getStockQuantity()-quantity);
+        itemRepository.save(itemEntity);
+    }
+
 }

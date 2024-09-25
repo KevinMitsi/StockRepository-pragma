@@ -18,4 +18,5 @@ public interface IItemServicePort {
     Double getPriceByItemId(Long itemId);
 
     List<Item> geItemsInUserCart(List<Long> itemIds, Long categoryToOrder, Long brandToOrder);
+    void reduceStock(Long itemId, Long quantity);
 }
