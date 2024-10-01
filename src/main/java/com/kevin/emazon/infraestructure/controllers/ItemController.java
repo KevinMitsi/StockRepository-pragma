@@ -79,7 +79,7 @@ public class ItemController {
         return itemHandler.isEnoughInStock(id, quantity);
     }
 
-    @PostMapping("/updateQuantity")
+    @PatchMapping("/updateQuantity")
     @Secured({ROLE_AUX_BODEGA, ROLE_ADMINISTRATOR})
     public void updateQuantityOfItem(@RequestBody UpdateItemQuantityRequest updateRequest){
         itemHandler.updateStockItem(updateRequest.getItemId(), updateRequest.getAmountSupplied());
@@ -95,7 +95,7 @@ public class ItemController {
         return itemHandler.getPriceByItemId(itemId);
     }
 
-    @PutMapping("reduceQuantity/{itemID}/{quantity}")
+    @PatchMapping("reduceQuantity/{itemID}/{quantity}")
     @ResponseStatus(HttpStatus.OK)
     public void reduceQuantityInStock(@PathVariable Long itemID, @PathVariable Long quantity){
         itemHandler.reduceStock(itemID, quantity);
