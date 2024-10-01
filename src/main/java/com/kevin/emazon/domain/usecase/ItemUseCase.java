@@ -34,6 +34,7 @@ public class ItemUseCase implements IItemServicePort {
     public static final int ZERO_INT_CONSTANT = 0;
     public static final String REDUCE_STOCK_ITEM_EXCEPTION = "NO SE ENCONTRO EL ITEM";
     public static final String NO_HAY_SUFICIENTES_ITEMS_PARA_COMPRAR = "NO HAY SUFICIENTES ITEMS PARA COMPRAR";
+    public static final String NOT_ENOUGH_IN_STOCK = NO_HAY_SUFICIENTES_ITEMS_PARA_COMPRAR;
     private final IItemPersistentPort itemPersistentPort;
     private final ICategoryPersistentPort categoryPersistentPort;
     private final IBrandPersistentPort brandPersistentPort;
@@ -140,7 +141,7 @@ public class ItemUseCase implements IItemServicePort {
             throw new ItemException(REDUCE_STOCK_ITEM_EXCEPTION);
         }
         if (!itemPersistentPort.isEnoughInStock(itemId, quantity)){
-            throw new ItemException(NO_HAY_SUFICIENTES_ITEMS_PARA_COMPRAR);
+            throw new ItemException(NOT_ENOUGH_IN_STOCK);
         }
         itemPersistentPort.reduceStock(itemId,quantity);
     }
