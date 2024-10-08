@@ -31,4 +31,9 @@ public class HandlerExceptionController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionResponseDto(e.getClass().getCanonicalName(), e.getMessage(), HttpStatus.BAD_REQUEST));
     }
 
+    @ExceptionHandler(CategoryException.class)
+    public ResponseEntity<ExceptionResponseDto> inCaseThrowingCategoryException(CategoryException e){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionResponseDto(e.getClass().getCanonicalName(), e.getMessage(), HttpStatus.BAD_REQUEST));
+    }
+
 }
